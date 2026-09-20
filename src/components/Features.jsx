@@ -1,4 +1,6 @@
 import Keycap from "@/components/Keycap";
+import BallSpeed from "@/components/motion/BallSpeed";
+import FrameStepper from "@/components/motion/FrameStepper";
 
 /**
  * Features — the six feature cards.
@@ -13,6 +15,10 @@ import Keycap from "@/components/Keycap";
  * The five stroke colours are used in exactly one place on the site — the stroke
  * list below — and never as decoration. The stroke name is always spelled out, so
  * colour is never the only thing carrying the meaning.
+ *
+ * Two cards carry a small client-side diagram: <FrameStepper> in the player
+ * card and <BallSpeed> in the ball-speed card. Both are aria-hidden and sit
+ * BELOW the prose that already explains them.
  */
 
 const strokes = [
@@ -57,6 +63,7 @@ export default function Features() {
               how you find the exact instant of contact. Slow motion and 5-second skips
               sit under the video.
             </p>
+            <FrameStepper />
           </li>
 
           <li className="home__feature">
@@ -98,6 +105,7 @@ export default function Features() {
               Calibrate the court once by clicking its four corners, then measure a shot
               by marking the ball across a few frames.
             </p>
+            <BallSpeed />
           </li>
 
           <li className="home__feature">

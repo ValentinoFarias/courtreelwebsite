@@ -1,3 +1,6 @@
+import HowProgress from "@/components/motion/HowProgress";
+import KeycapSequence from "@/components/motion/KeycapSequence";
+
 /**
  * HowItWorks — the four-step walkthrough, film to export.
  *
@@ -7,6 +10,11 @@
  *
  * The step numbers are CSS counters (see the HOW IT WORKS banner in style.css),
  * so the list stays an honest <ol> and there is no clipart anywhere near it.
+ *
+ * Two client components sit inside it and nothing else changed: <HowProgress>
+ * draws the scrubbed rule across the four steps, and <KeycapSequence> shows
+ * step 3's shortcuts pressing. Both are decorative and aria-hidden; the steps
+ * read exactly the same with JavaScript off.
  */
 
 const steps = [
@@ -21,6 +29,7 @@ const steps = [
   {
     title: "Mark or auto-detect",
     body: "Press one key at the frame of contact to mark a shot, or run “Analyze Video” and let CourtReel find the strokes for you.",
+    tape: true,
   },
   {
     title: "Review and export",
@@ -46,11 +55,14 @@ export default function HowItWorks() {
           </p>
         </div>
 
+        <HowProgress count={steps.length} />
+
         <ol className="home__how-list">
           {steps.map((step) => (
             <li key={step.title} className="home__how-step">
               <h3 className="home__how-step-title">{step.title}</h3>
               <p className="home__how-step-body">{step.body}</p>
+              {step.tape ? <KeycapSequence /> : null}
             </li>
           ))}
         </ol>

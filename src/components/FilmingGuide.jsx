@@ -1,8 +1,14 @@
+import FilmingCamera from "@/components/motion/FilmingCamera";
+
 /**
  * FilmingGuide — how to film so the analyser can read the video.
  *
  * Server component. Short and friendly: the near-player limit is stated as what
  * it is — how the analyser works — rather than dressed up as advice.
+ *
+ * <FilmingCamera> is the one pinned scene on the page. It shows the camera
+ * position the first tip describes and nothing the tips do not already say;
+ * with JavaScript off, or reduced motion on, the advice below is unchanged.
  */
 
 const tips = [
@@ -40,6 +46,8 @@ export default function FilmingGuide() {
             A minute of setup at the court makes everything afterwards easier.
           </p>
         </div>
+
+        <FilmingCamera />
 
         <dl className="home__guide-list">
           {tips.map((tip) => (

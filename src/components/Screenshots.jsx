@@ -1,52 +1,58 @@
 import Image from "next/image";
 
+import ShotReveal from "@/components/motion/ShotReveal";
+
 /*
-  Screenshots — three black wells with captions.
+  Screenshots — four black wells with captions, in the order the app is used:
+  import, mark, auto-detect, review.
 
-  Server component. None of the PNGs exist yet, so none of them is imported:
-  a static import of a missing file fails `next build`. Following the convention
-  documented at the top of HomePage.jsx, each screen is declared here with an
-  `available` flag. While the flag is false the well shows the --color-stage
-  placeholder naming the exact screen that belongs in it, so the page never
-  renders a broken image.
+  Server component. Each screen carries an `available` flag: while it is false
+  the well shows the --color-stage placeholder naming the screen that belongs
+  in it, so the page never renders a broken image (see the missing-asset
+  convention at the top of HomePage.jsx).
 
-  To ship a screenshot: drop the PNG into /public/screenshots with the filename
-  below and flip `available` to true. That is the only edit required — the true
-  branch already uses next/image.
+  <ShotReveal> wraps each well with a one-off clip-path wipe. It clips; it
+  never hides. The image is in the DOM and in the accessibility tree from the
+  first paint whether or not the wipe ever runs.
 */
 const shots = [
   {
-    // /public/screenshots/calendar.png — the training calendar
-    src: "/screenshots/calendar.png",
-    file: "calendar.png",
+    src: "/screenshots/calendar.jpg",
+    file: "calendar.jpg",
     screen: "the training calendar",
     alt: "The CourtReel training calendar, with each filmed session sitting on the day it was recorded.",
     caption: "The training calendar. Every session lands on the day it was filmed.",
-    available: false,
+    available: true,
   },
   {
-    // /public/screenshots/player.png — the frame-accurate player
-    src: "/screenshots/player.png",
-    file: "player.png",
+    src: "/screenshots/theplayer.jpg",
+    file: "theplayer.jpg",
     screen: "the frame-accurate player",
     alt: "The CourtReel player paused on a single frame, with slow motion and skip controls under the video.",
     caption: "The frame-accurate player, paused at the instant of contact.",
-    available: false,
+    available: true,
   },
   {
-    // /public/screenshots/shots.png — the shot list / review view
-    src: "/screenshots/shots.png",
-    file: "shots.png",
+    src: "/screenshots/analizer.jpg",
+    file: "analizer.jpg",
+    screen: "the automatic stroke detection results",
+    alt: "The CourtReel video analysis, with forehands, backhands and serves found across a whole video and tagged AUTO.",
+    caption: "Automatic stroke detection. A first pass over the whole video, tagged AUTO and fully editable.",
+    available: true,
+  },
+  {
+    src: "/screenshots/shotreview.jpg",
+    file: "shotreview.jpg",
     screen: "the shot list and review view",
     alt: "The CourtReel shot list, showing every point and shot of a session in time order with star ratings.",
     caption: "The shot list. Every point and shot in time order, rated and ready to export.",
-    available: false,
+    available: true,
   },
 ];
 
-/* 16:10, matching --aspect-screenshot. next/image needs the intrinsic size. */
-const SHOT_WIDTH = 1600;
-const SHOT_HEIGHT = 1000;
+/* Intrinsic size of the source files; next/image uses it for the aspect ratio. */
+const SHOT_WIDTH = 2712;
+const SHOT_HEIGHT = 1646;
 
 export default function Screenshots() {
   return (
@@ -58,7 +64,7 @@ export default function Screenshots() {
         <div className="home__section-head">
           <p className="home__eyebrow">The app</p>
           <h2 id="home-shots-title" className="home__section-title">
-            Three screens
+            Four screens
           </h2>
         </div>
 
@@ -66,24 +72,26 @@ export default function Screenshots() {
           {shots.map((shot) => (
             <li key={shot.file}>
               <figure className="home__shot">
-                <div className="home__well">
-                  {shot.available ? (
-                    <Image
-                      className="home__shot-image"
-                      src={shot.src}
-                      alt={shot.alt}
-                      width={SHOT_WIDTH}
-                      height={SHOT_HEIGHT}
-                    />
-                  ) : (
-                    /* Placeholder until the PNG named in `file` is dropped in. */
-                    <div className="home__well-placeholder">
-                      <span>
-                        <code>{shot.file}</code> — {shot.screen}
-                      </span>
-                    </div>
-                  )}
-                </div>
+                <ShotReveal>
+                  <div className="home__well">
+                    {shot.available ? (
+                      <Image
+                        className="home__shot-image"
+                        src={shot.src}
+                        alt={shot.alt}
+                        width={SHOT_WIDTH}
+                        height={SHOT_HEIGHT}
+                        sizes="(min-width: 1056px) 1024px, 100vw"
+                      />
+                    ) : (
+                      <div className="home__well-placeholder">
+                        <span>
+                          <code>{shot.file}</code> — {shot.screen}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </ShotReveal>
                 <figcaption className="home__shot-caption">{shot.caption}</figcaption>
               </figure>
             </li>

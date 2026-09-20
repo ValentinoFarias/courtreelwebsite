@@ -36,25 +36,24 @@ There is no `{{DOMAIN}}` token — the domain lives in two real places instead:
 
 ### Missing brand assets
 
-None of these exist. None of them is `import`ed either — a static import of a
-missing file fails `next build` — so the site builds and looks correct without
-them. Each one is behind an `available` flag or a metadata reference that simply
-starts working once the file is on disk.
+`public/courtreel-mark.svg` (hero logo) and the four screenshots in
+`public/screenshots/` (`calendar.jpg`, `theplayer.jpg`, `analizer.jpg`,
+`shotreview.jpg`) are in place. Two brand assets are still missing. Neither is
+`import`ed — a static import of a missing file fails `next build` — so the site
+builds and looks correct without them; each starts working once the file is on
+disk.
 
 | File | Size / format | Used by | To switch on |
 | --- | --- | --- | --- |
-| `public/courtreel-mark.svg` | Hairline sketch strokes. **Never render it below ~64px** — the strokes disappear. | `src/components/Hero.jsx` | Drop the file in, set `brandMark.available` to `true`. Until then the hero is a plain text hero, which is deliberate: no grey slab in the opening screen. |
 | `public/icon.png` | 1024×1024 app icon | Not wired yet | Drop it in `public/`. For a favicon the simplest route is to put a copy at `src/app/icon.png` — Next picks that up automatically, no code. `layout.jsx` has a comment saying no favicon is declared *because* this file does not exist; delete the comment when it does. |
 | `public/og.png` | 1200×630 social preview | `src/app/(site)/layout.jsx` metadata | Nothing to flip. The metadata already points at `/og.png`; the moment the file exists, link previews start working. Needs `NEXT_PUBLIC_SITE_URL` set to be absolute. |
-| `public/screenshots/calendar.png` | 16:10, ideally 1600×1000 | `src/components/Screenshots.jsx` | Drop it in, set that entry's `available` to `true`. |
-| `public/screenshots/player.png` | 16:10 | `src/components/Screenshots.jsx` | Same. |
-| `public/screenshots/shots.png` | 16:10 | `src/components/Screenshots.jsx` | Same. |
 
-**What flipping `available` involves:** nothing but the boolean. Each component
-holds a small local array (`shots` in `Screenshots.jsx`, `brandMark` in
-`Hero.jsx`) with `src`, `alt` and `available`. False renders a labelled
-placeholder naming the missing screen; true renders `next/image` with the alt
-text that is already written. One character, no other edit anywhere.
+**Replacing a screenshot or the logo:** overwrite the file in `public/`. Each
+component holds a small local array (`shots` in `Screenshots.jsx`, `brandMark` in
+`Hero.jsx`) with `src`, `alt` and an `available` flag; setting it to `false`
+falls back to a labelled placeholder instead of a broken image. The logo is
+served through `next/image`, which is why `next.config.mjs` sets
+`dangerouslyAllowSVG` (with a script-blocking CSP).
 
 ---
 
@@ -175,10 +174,11 @@ Worth knowing before changing anything:
   all come from the custom properties at the top of the file.
 - **`home__` BEM-like class names** for everything, including the client
   components.
-- **Server components by default. Exactly three client components:**
-  `DownloadCards.jsx`, `InstallNotes.jsx`, `FeedbackForm.jsx`. If a fourth file
-  ever needs `"use client"`, that is a decision worth stopping over, not a
-  reflex. Anything the browser knows — the OS guess, the user-agent string — is
+- **Server components by default.** The client components are
+  `DownloadCards.jsx`, `InstallNotes.jsx`, `FeedbackForm.jsx`, plus the
+  motion-only ones in `src/components/motion/` (see §7). Anything that is not
+  interactivity or motion stays a server component and needs a reason to change.
+  Anything the browser knows — the OS guess, the user-agent string — is
   read in an effect *after* mount, never during render, so the server HTML and
   the first client render always agree and hydration never mismatches.
 - **One `<h1>` on the page**, and it belongs to the hero. Every section uses
@@ -194,7 +194,44 @@ Worth knowing before changing anything:
 
 ---
 
-## 7. Known deviation: `--color-text-secondary`
+## 7. Motion layer: GSAP and three.js
+
+The original spec banned animation libraries; **GSAP and three.js were later
+allowed, and only those two.** They live in `package.json` as `gsap` and `three`.
+
+- `src/lib/court.js` — the tennis court in metres, once. The SVG fallback and
+  both WebGL scenes read it, so they cannot drift apart.
+- `src/lib/courtScene.js` — three.js geometry (lines only: no faces, lights or
+  shadows). Colours are read from the `--color-ink` / `--color-clay` tokens.
+- `src/lib/motion.js` — reduced-motion check, pixel-ratio cap of 2, one-time
+  ScrollTrigger registration, the visibility gate, the WebGL probe.
+- `src/components/motion/` — one small client component per effect: hero court
+  (`HeroCourt`), pinned filming camera (`FilmingCamera`), how-it-works progress
+  rule (`HowProgress`), step-3 keycaps (`KeycapSequence`), frame stepper
+  (`FrameStepper`), ball-speed calibration (`BallSpeed`) and the screenshot wipe
+  (`ShotReveal`). `CourtFallback` is a server component: the static SVG.
+
+The rules that keep it calm: three.js is loaded with `next/dynamic({ ssr: false })`
+and gsap with a dynamic `import()`, so neither is in the first-paint bundle; every
+WebGL loop stops off-screen and on a hidden tab; a failed context or chunk leaves
+the static SVG in place; under `prefers-reduced-motion` no canvas is mounted and
+every effect draws its final state once. Every animated block is `aria-hidden`
+and sits below prose that says the same thing, so nothing depends on it.
+
+Clay stays rationed: the hero ball and the phone marker in the filming scene are
+the only new clay marks. The ball-speed card shows **98 km/h labelled "an example
+reading"** — a made-up figure (`EXAMPLE_SPEED` in `BallSpeed.jsx`). If you would
+rather not show a number, change the readout there to end on a dash; the four
+lit corners are the point of the effect, not the value.
+
+To cut an effect, delete its component's mount from the parent
+(`Hero`, `HowItWorks`, `Features`, `Screenshots`, `FilmingGuide`); nothing else
+refers to it. The pinned filming scene is the heaviest on the visitor's scroll —
+its `pin` option is in `FilmingCameraScene.jsx`.
+
+---
+
+## 8. Known deviation: `--color-text-secondary`
 
 The spec mandates 4.5:1 minimum contrast and also specified
 `--color-text-secondary: rgba(20, 18, 12, .58)`. Those two statements

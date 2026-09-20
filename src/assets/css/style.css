@@ -464,6 +464,41 @@ canvas {
 }
 
 
+/* ---- Shared primitive: the court drawing ------------------------------------
+   Used by the hero and by the filming guide. The SVG fallback, the WebGL
+   canvas and the pinned scene all render into this same box, so the two never
+   disagree about size. Ink hairlines; the ball is the only clay mark. */
+
+.home__court {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  color: var(--color-ink);
+}
+
+.home__court-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+/* three.js is told not to touch inline styles (setSize(w, h, false)), so the
+   element is sized here and the drawing buffer follows the capped DPR. */
+.home__court-canvas canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.home__court-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.home__court-ball {
+  fill: var(--color-clay);
+}
+
+
 /* ---- Reduced motion -------------------------------------------------------------- */
 
 /* Global kill switch. Kept here, with the base rules, so no section can ship an
@@ -688,6 +723,38 @@ canvas {
 }
 
 
+/* The mark now sits behind the copy at full size. It is set well back so the
+   lede reads over it at full contrast — the mark is identity, not texture. */
+.home__hero-copy {
+  position: relative;
+}
+
+.home__hero-watermark {
+  position: absolute;
+  inset-block-start: -12%;
+  inset-inline-start: -14%;
+  z-index: var(--z-base);
+  width: min(26rem, 88%);
+  color: var(--color-ink);
+  opacity: 0.045;
+  pointer-events: none;
+}
+
+.home__hero-copy > :not(.home__hero-watermark) {
+  position: relative;
+  z-index: 1;
+}
+
+/* The drawing column. A measure-sized basis, so it wraps under the copy long
+   before either column gets too narrow to read. */
+.home__hero-figure {
+  flex: 1 1 18rem;
+  min-width: 0;
+  max-width: 28rem;
+  margin-inline: auto;
+}
+
+
 /* =============================================================================
    HOW IT WORKS  (HowItWorks.jsx)
    The numbered three-or-four step walkthrough.
@@ -732,6 +799,129 @@ canvas {
   font-size: var(--text-sm);
   line-height: var(--leading-normal);
 }
+
+
+/* ---- The scrubbed progress rule (HowProgress.jsx) ---------------------------
+   A margin rule, not an entrance: every step is already on the page. */
+
+.home__how-progress {
+  position: relative;
+  height: var(--space-sm);
+  margin-block-end: var(--space-md);
+}
+
+.home__how-progress-track,
+.home__how-progress-fill {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline: 0;
+  height: var(--border-width-hairline);
+}
+
+.home__how-progress-track {
+  background-color: var(--color-hairline);
+}
+
+.home__how-progress-fill {
+  background-color: var(--color-text);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.home__how-progress-dots {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline: 0;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+}
+
+.home__how-progress-dot {
+  width: var(--space-2xs);
+  height: var(--space-2xs);
+  border: var(--border-hairline);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-stage);
+  transition: background-color var(--transition-base), border-color var(--transition-base);
+}
+
+.home__how-progress-dot[data-reached="true"] {
+  border-color: var(--color-text);
+  background-color: var(--color-text);
+}
+
+
+/* ---- Step 3: the keys pressing (KeycapSequence.jsx) -------------------------
+   The keycap treatment is the shared one — mono, faint fill, hairline border —
+   with a pressed state added. The ticks are the five stroke colours, used the
+   same way the features list uses them and nowhere else. */
+
+.home__tape {
+  margin-block-start: var(--space-sm);
+}
+
+.home__tape-keys {
+  display: flex;
+  gap: var(--space-3xs);
+  margin-block-end: var(--space-2xs);
+}
+
+.home__tape-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--space-md);
+  padding: 0 var(--space-3xs);
+  border: var(--border-hairline);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-fill-subtle);
+  color: var(--color-text-secondary);
+  font-family: var(--font-numeric);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  line-height: 1.7;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.home__tape-key[data-pressed="true"] {
+  background-color: var(--color-fill);
+  color: var(--color-text);
+  transform: translateY(1px);
+}
+
+.home__tape-strip {
+  position: relative;
+  height: var(--space-md);
+  border: var(--border-hairline);
+  border-radius: var(--radius-xs);
+  background-color: var(--color-fill-subtle);
+}
+
+.home__tape-tick {
+  position: absolute;
+  inset-block: var(--space-3xs);
+  width: 2px;
+  background-color: currentColor;
+  opacity: 0;
+  transform: translateY(calc(var(--space-3xs) * -1));
+  transition: opacity var(--transition-base), transform var(--transition-base);
+}
+
+.home__tape-tick[data-dropped="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+.home__tape-tick--ni { color: var(--color-ni); }
+.home__tape-tick--forehand { color: var(--color-forehand); }
+.home__tape-tick--backhand { color: var(--color-backhand); }
+.home__tape-tick--volley-fh { color: var(--color-volley-fh); }
+.home__tape-tick--volley-bh { color: var(--color-volley-bh); }
+.home__tape-tick--serve { color: var(--color-serve); }
 
 
 /* =============================================================================
@@ -822,6 +1012,139 @@ canvas {
 }
 
 
+/* ---- Frame stepping (FrameStepper.jsx) ---------------------------------------
+   Nine frames, advanced in steps. Ink only: this is a diagram of the arrow
+   keys, not a highlight. */
+
+.home__frames {
+  margin-block-start: var(--space-sm);
+}
+
+.home__frames-row {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 2px;
+}
+
+.home__frames-cell {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border: var(--border-hairline);
+  border-radius: var(--radius-xs);
+  background-color: var(--color-fill-subtle);
+}
+
+.home__frames-cell--contact {
+  border-color: var(--color-text);
+}
+
+.home__frames-ball {
+  position: absolute;
+  inset-inline-start: 50%;
+  width: var(--space-3xs);
+  height: var(--space-3xs);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-text);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity var(--transition-fast);
+}
+
+.home__frames-cell[data-state="past"] .home__frames-ball { opacity: 0.3; }
+.home__frames-cell[data-state="now"] .home__frames-ball { opacity: 1; }
+
+.home__frames-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3xs);
+  margin-block-start: var(--space-3xs);
+  color: var(--color-text-secondary);
+  font-family: var(--font-numeric);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-wide);
+}
+
+.home__frames-label-mark {
+  width: var(--border-width-hairline);
+  height: var(--space-2xs);
+  background-color: var(--color-text);
+}
+
+
+/* ---- Ball speed (BallSpeed.jsx) ----------------------------------------------
+   Four corners, then a number: the same order the app asks for. */
+
+.home__speed {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-md);
+  margin-block-start: var(--space-sm);
+}
+
+.home__speed-plan {
+  position: relative;
+  flex: none;
+  width: 4.5rem;
+  aspect-ratio: 3 / 4;
+  border: var(--border-hairline);
+  border-radius: var(--radius-xs);
+}
+
+.home__speed-net {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline: 0;
+  height: var(--border-width-hairline);
+  background-color: var(--color-hairline);
+}
+
+.home__speed-corner {
+  position: absolute;
+  width: var(--space-2xs);
+  height: var(--space-2xs);
+  border: var(--border-hairline);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-elevated);
+  transform: translate(-50%, -50%);
+  transition: background-color var(--transition-base), border-color var(--transition-base);
+}
+
+.home__speed-corner[data-lit="true"] {
+  border-color: var(--color-text);
+  background-color: var(--color-text);
+}
+
+.home__speed-corner[data-corner="tl"] { inset-block-start: 0; inset-inline-start: 0; }
+.home__speed-corner[data-corner="tr"] { inset-block-start: 0; inset-inline-start: 100%; }
+.home__speed-corner[data-corner="br"] { inset-block-start: 100%; inset-inline-start: 100%; }
+.home__speed-corner[data-corner="bl"] { inset-block-start: 100%; inset-inline-start: 0; }
+
+.home__speed-readout {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3xs);
+  margin: 0;
+}
+
+.home__speed-value {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-medium);
+}
+
+.home__speed-unit {
+  color: var(--color-text-secondary);
+  font-family: var(--font-numeric);
+  font-size: var(--text-xs);
+}
+
+.home__speed-note {
+  margin-block-start: var(--space-3xs);
+  color: var(--color-text-secondary);
+  font-size: var(--text-2xs);
+}
+
+
 /* =============================================================================
    SCREENSHOTS  (Screenshots.jsx)
    Screenshot wells and captions; uses .home__well / .home__well-placeholder.
@@ -855,6 +1178,13 @@ canvas {
 }
 
 
+/* The clip-path wipe (ShotReveal.jsx). It clips, it never hides: with no
+   JavaScript the wrapper is an untouched <div>. */
+.home__shot-reveal {
+  will-change: clip-path;
+}
+
+
 /* =============================================================================
    FILMING GUIDE  (FilmingGuide.jsx)
    Camera-angle and framing advice for shooting on a phone.
@@ -884,6 +1214,29 @@ canvas {
   margin: 0;
   font-size: var(--text-sm);
   line-height: var(--leading-relaxed);
+}
+
+
+/* ---- The pinned camera scene (FilmingCamera.jsx) -----------------------------
+   The picture of the advice underneath it. Capped in viewport height so the
+   pin never leaves a short screen with nothing but a drawing on it. */
+
+.home__guide-scene {
+  margin: 0 0 var(--space-xl);
+}
+
+.home__court--guide {
+  aspect-ratio: 16 / 10;
+  max-height: 58vh;
+  border-block-end: var(--border-hairline);
+}
+
+.home__guide-scene-caption {
+  max-width: var(--measure-prose);
+  margin-block-start: var(--space-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
 }
 
 
@@ -1369,5 +1722,28 @@ canvas {
 
   .home__features-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ---- 42rem / 672px — the drawings get room ---------------------------------- */
+@media (min-width: 42rem) {
+  .home__court {
+    aspect-ratio: 5 / 4;
+  }
+
+  .home__court--guide {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* ---- 60rem / 960px — hero becomes two real columns -------------------------- */
+@media (min-width: 60rem) {
+  .home__hero-figure {
+    flex: 0 1 24rem;
+    margin-inline: 0;
+  }
+
+  .home__hero-watermark {
+    width: min(30rem, 100%);
   }
 }
