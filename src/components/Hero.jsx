@@ -8,36 +8,37 @@ import { release } from "@/data/release";
   in the navbar and the heading below already name the product. Rendered via
   next/image, which needs `dangerouslyAllowSVG` in next.config.mjs to serve it.
 
-  The mark now sits BEHIND the copy at full size rather than beside it, and the
-  right-hand column holds the court drawing (HeroCourt). Both are ink
-  hairlines, so the mark is set well back — see the HERO banner in style.css.
+  The mark is centred BEHIND the whole hero, large, and the right-hand column
+  holds the court drawing (HeroCourt). Both are ink hairlines, so the mark is
+  set well back — see the HERO banner in style.css.
 */
 const brandMark = {
   src: "/courtreel-mark.svg",
   alt: "",
-  width: 420,
-  height: 420,
+  width: 1024,
+  height: 1024,
   available: true,
 };
 
 export default function Hero() {
   return (
     <section className="home__section home__hero" aria-labelledby="home-hero-title">
+      {/* Hero mark: rendered only once the file exists (see brandMark above). */}
+      {brandMark.available ? (
+        <div className="home__hero-watermark" aria-hidden="true">
+          <Image
+            className="home__watermark-image"
+            src={brandMark.src}
+            alt={brandMark.alt}
+            width={brandMark.width}
+            height={brandMark.height}
+            priority
+          />
+        </div>
+      ) : null}
+
       <div className="home__container home__hero-inner">
         <div className="home__hero-copy">
-          {/* Hero mark: rendered only once the file exists (see brandMark above). */}
-          {brandMark.available ? (
-            <div className="home__hero-watermark" aria-hidden="true">
-              <Image
-                src={brandMark.src}
-                alt={brandMark.alt}
-                width={brandMark.width}
-                height={brandMark.height}
-                priority
-              />
-            </div>
-          ) : null}
-
           <p className="home__eyebrow">Tennis training video</p>
 
           <h1 id="home-hero-title" className="home__hero-title">

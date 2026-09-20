@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import { release } from "@/data/release";
@@ -203,7 +204,18 @@ export default function FeedbackForm() {
       className="home__section home__feedback"
       aria-labelledby="home-feedback-title"
     >
-      <div className="home__container home__container--narrow">
+      {/* Decorative brand mark closing the page; see the FEEDBACK banner. */}
+      <div className="home__feedback-watermark" aria-hidden="true">
+        <Image
+          className="home__watermark-image"
+          src="/courtreel-mark.svg"
+          alt=""
+          width={1024}
+          height={1024}
+        />
+      </div>
+
+      <div className="home__container home__container--narrow home__feedback-inner">
         <div className="home__section-head">
           <p className="home__eyebrow">Tell me what broke</p>
           <h2 id="home-feedback-title" className="home__section-title">

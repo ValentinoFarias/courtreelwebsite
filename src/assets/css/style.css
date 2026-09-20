@@ -723,24 +723,35 @@ canvas {
 }
 
 
-/* The mark now sits behind the copy at full size. It is set well back so the
-   lede reads over it at full contrast — the mark is identity, not texture. */
-.home__hero-copy {
+/* The mark is centred behind the whole hero and set well back, so the lede
+   reads over it at full contrast — the mark is identity, not texture. The
+   section clips it, so a mark wider than a phone never causes a sideways
+   scroll. The same treatment closes the FEEDBACK section. */
+.home__hero {
   position: relative;
+  overflow: clip;
 }
 
 .home__hero-watermark {
   position: absolute;
-  inset-block-start: -12%;
-  inset-inline-start: -14%;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
   z-index: var(--z-base);
-  width: min(26rem, 88%);
+  width: min(42rem, 130%);
   color: var(--color-ink);
   opacity: 0.045;
   pointer-events: none;
+  transform: translate(-50%, -50%);
 }
 
-.home__hero-copy > :not(.home__hero-watermark) {
+/* Shared by the hero and feedback marks. */
+.home__watermark-image {
+  width: 100%;
+  height: auto;
+}
+
+/* Everything that must read sits above the mark. */
+.home__hero-inner {
   position: relative;
   z-index: 1;
 }
@@ -1455,6 +1466,31 @@ canvas {
    T3 fills this section. Leave the banner where it is.
    ============================================================================= */
 
+/* The brand mark closes the page, small and tucked into the bottom-right
+   corner, level with the right edge of the content. On wide screens it sits in
+   the free space beside the form, so nothing covers it. The section clips it,
+   so it can never widen the page. */
+.home__feedback {
+  position: relative;
+  overflow: clip;
+}
+
+.home__feedback-watermark {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: max(var(--container-gutter), calc((100% - var(--container-max)) / 2));
+  z-index: var(--z-base);
+  width: min(16rem, 55%);
+  color: var(--color-ink);
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.home__feedback-inner {
+  position: relative;
+  z-index: 1;
+}
+
 .home__feedback-useful {
   margin-block-end: var(--space-xl);
 }
@@ -1741,9 +1777,5 @@ canvas {
   .home__hero-figure {
     flex: 0 1 24rem;
     margin-inline: 0;
-  }
-
-  .home__hero-watermark {
-    width: min(30rem, 100%);
   }
 }
