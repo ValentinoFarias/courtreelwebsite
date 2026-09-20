@@ -1,0 +1,1373 @@
+/* =============================================================================
+   CSS CUSTOM PROPERTIES  (global design tokens)
+   Colour, spacing, radius, type, measure, shadow and motion scales. Everything
+   downstream uses these — no magic numbers below this block.
+   ============================================================================= */
+
+:root {
+  /* ---- Palette ------------------------------------------------------------ */
+
+  /* Straight from the logo */
+  --color-paper: #f4f3ee;      /* page background */
+  --color-ink: #14120c;        /* text, and the primary button */
+  /* The one addition */
+  --color-clay: #b04a2f;       /* THE accent */
+
+  --color-stage: #e6e4dc;      /* recessed / alternating section */
+  --color-elevated: #fdfcfa;   /* cards */
+  --color-black: #000;         /* screenshot wells only */
+
+  --color-hairline: rgba(20, 18, 12, .13);
+  --color-fill-subtle: rgba(20, 18, 12, .04);
+  --color-fill: rgba(20, 18, 12, .07);
+
+  --color-text: rgba(20, 18, 12, .92);
+  /* Was .58 — measured 4.43:1 on --color-paper, just under the 4.5:1 the spec
+     itself mandates. Nudged to .6 (4.73:1); visually indistinguishable. */
+  --color-text-secondary: rgba(20, 18, 12, .6);
+  --color-text-tertiary: rgba(20, 18, 12, .38);
+  --color-on-accent: #f7f6f2;
+
+  /* Functional stroke colours. Use ONLY to colour-code the five stroke types
+     where the site shows them. Never as decoration. */
+  --color-forehand: #2f6f5b;
+  --color-backhand: #2c5d8f;
+  --color-volley-fh: #9c3567;
+  --color-volley-bh: #4a6b14;
+  --color-serve: #7b4f9e;
+  --color-ni: #6b6459;
+  --color-red: #9b1c1c;        /* form errors */
+
+  --font-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-numeric: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+
+  /* ---- Spacing scale ------------------------------------------------------
+     A 4px base, doubling loosely. --space-sm (16px) is also the page gutter. */
+  --space-3xs: 0.25rem;   /*  4px */
+  --space-2xs: 0.5rem;    /*  8px */
+  --space-xs: 0.75rem;    /* 12px */
+  --space-sm: 1rem;       /* 16px */
+  --space-md: 1.5rem;     /* 24px */
+  --space-lg: 2rem;       /* 32px */
+  --space-xl: 3rem;       /* 48px */
+  --space-2xl: 4rem;      /* 64px */
+  --space-3xl: 6rem;      /* 96px */
+  --space-4xl: 8rem;      /* 128px */
+
+  /* Vertical rhythm between full-width sections. Fluid, generous. */
+  --space-section: clamp(3.5rem, 4vw + 2rem, 6rem);
+  --space-section-tight: clamp(2.5rem, 3vw + 1.5rem, 4rem);
+
+  /* ---- Layout ------------------------------------------------------------- */
+  --container-max: 64rem;        /* 1024px of content */
+  --container-narrow: 44rem;     /*  704px — prose-width blocks */
+  --container-gutter: 1rem;      /*   16px side gutters, per spec */
+  --navbar-height: 4rem;
+  --control-height: 2.75rem;     /* 44px — minimum comfortable hit target */
+
+  /* ---- Radius scale ------------------------------------------------------- */
+  --radius-xs: 3px;
+  --radius-sm: 5px;              /* the keycap */
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 18px;
+  --radius-pill: 999px;
+
+  /* ---- Border ------------------------------------------------------------- */
+  --border-width-hairline: 1px;
+  --border-hairline: var(--border-width-hairline) solid var(--color-hairline);
+
+  /* ---- Type scale --------------------------------------------------------- */
+  --text-2xs: 0.6875rem;   /* 11px — keycap, micro-labels */
+  --text-xs: 0.75rem;      /* 12px */
+  --text-sm: 0.875rem;     /* 14px */
+  --text-base: 1rem;       /* 16px — body */
+  --text-md: 1.125rem;     /* 18px — lede */
+  --text-lg: 1.375rem;     /* 22px — card titles */
+  --text-xl: clamp(1.5rem, 1vw + 1.25rem, 1.75rem);    /* sub-headings */
+  --text-2xl: clamp(1.75rem, 2vw + 1.25rem, 2.25rem);  /* section headings */
+  --text-3xl: clamp(2.25rem, 4vw + 1.25rem, 3.25rem);  /* hero title */
+
+  --leading-tight: 1.15;
+  --leading-snug: 1.3;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.75;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.02em;
+  --tracking-eyebrow: 0.12em;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  /* ---- Measure (line length) ---------------------------------------------- */
+  --measure-tight: 34ch;    /* captions, card copy */
+  --measure-heading: 22ch;  /* stops big headings running wide */
+  --measure-lede: 52ch;
+  --measure-prose: 66ch;
+
+  /* ---- Shadow scale -------------------------------------------------------
+     Restrained. --shadow-soft is the paper-card-over-a-black-well shadow. */
+  --shadow-hairline: 0 1px 0 var(--color-hairline);
+  --shadow-soft: 0 1px 2px rgba(20, 18, 12, .05), 0 8px 24px rgba(20, 18, 12, .08);
+  --shadow-raised: 0 2px 4px rgba(20, 18, 12, .06), 0 16px 40px rgba(20, 18, 12, .12);
+
+  /* ---- Motion & state ----------------------------------------------------- */
+  --transition-fast: 120ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 320ms ease;
+  --motion-reduced-duration: 0.01ms;
+
+  --opacity-hover: 0.86;
+  --opacity-disabled: 0.45;
+
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring-color: var(--color-clay);
+
+  /* ---- Ratios & stacking --------------------------------------------------- */
+  --aspect-screenshot: 16 / 10;
+  --z-base: 0;
+  --z-navbar: 10;
+  --z-overlay: 20;
+}
+
+
+/* =============================================================================
+   BASE / GLOBAL RESET
+   Element resets, typographic rhythm, focus, and the shared primitives that
+   more than one section needs (container, section, keycap, buttons, wells).
+   ============================================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* Anchor links must clear the sticky navbar. */
+  scroll-padding-block-start: calc(var(--navbar-height) + var(--space-sm));
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-text);
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Nothing may push the page sideways at 360px. */
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Headings and paragraphs: rhythm comes from the scale, at low specificity so
+   section styles can override without fighting. */
+:where(h1, h2, h3, h4, h5, h6) {
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+}
+
+:where(h1) { font-size: var(--text-3xl); }
+:where(h2) { font-size: var(--text-2xl); }
+:where(h3) { font-size: var(--text-xl); }
+:where(h4) { font-size: var(--text-lg); }
+:where(h5) { font-size: var(--text-md); }
+:where(h6) { font-size: var(--text-base); }
+
+:where(h2, h3, h4, h5, h6) {
+  margin-block: var(--space-lg) var(--space-sm);
+}
+
+:where(p, ul, ol, dl, figure, blockquote, pre, table) {
+  margin-block-end: var(--space-sm);
+}
+
+:where(p) {
+  text-wrap: pretty;
+}
+
+:where(h1, h2, h3, h4, h5, h6):first-child,
+:where(p, ul, ol, dl, figure, blockquote, pre, table):first-child {
+  margin-block-start: 0;
+}
+
+:where(p, ul, ol, dl, figure, blockquote, pre, table):last-child {
+  margin-block-end: 0;
+}
+
+:where(ul, ol) {
+  padding-inline-start: var(--space-md);
+}
+
+:where(code, kbd, samp, pre) {
+  font-family: var(--font-numeric);
+  font-size: var(--text-sm);
+}
+
+:where(a) {
+  color: inherit;
+}
+
+:where(button, input, select, textarea) {
+  font: inherit;
+  color: inherit;
+}
+
+/* Always a visible focus ring. Never `outline: none`. */
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+::selection {
+  background-color: var(--color-clay);
+  color: var(--color-on-accent);
+}
+
+
+/* ---- Shared primitive: layout ---------------------------------------------- */
+
+/* Centred wrapper with 16px side gutters. */
+.home__container {
+  width: 100%;
+  max-width: calc(var(--container-max) + (var(--container-gutter) * 2));
+  margin-inline: auto;
+  padding-inline: var(--container-gutter);
+}
+
+.home__container--narrow {
+  max-width: calc(var(--container-narrow) + (var(--container-gutter) * 2));
+}
+
+.home__section {
+  padding-block: var(--space-section);
+  background-color: var(--color-paper);
+}
+
+/* Alternating / recessed section. */
+.home__section--stage {
+  background-color: var(--color-stage);
+}
+
+.home__section--tight {
+  padding-block: var(--space-section-tight);
+}
+
+/* A quiet hairline rule between sections that share a background. */
+.home__rule {
+  height: var(--border-width-hairline);
+  border: 0;
+  background-color: var(--color-hairline);
+}
+
+/* Accessible-but-invisible text (skip link target, icon-only labels). */
+.home__visually-hidden {
+  position: absolute;
+  width: var(--border-width-hairline);
+  height: var(--border-width-hairline);
+  margin: calc(var(--border-width-hairline) * -1);
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+
+/* ---- Shared primitive: section typography ----------------------------------- */
+
+.home__section-head {
+  margin-block-end: var(--space-xl);
+}
+
+.home__eyebrow {
+  margin-block-end: var(--space-2xs);
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-eyebrow);
+  line-height: var(--leading-snug);
+  text-transform: uppercase;
+}
+
+.home__section-title {
+  max-width: var(--measure-heading);
+  margin-block: 0;
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+}
+
+.home__lede {
+  max-width: var(--measure-lede);
+  margin-block-start: var(--space-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+}
+
+
+/* ---- Shared primitive: keycap ------------------------------------------------ */
+
+/* Keyboard shortcut. Sized so it never reflows the line it sits in. */
+.home__keycap {
+  display: inline-block;
+  padding: 0 var(--space-3xs);
+  border: var(--border-hairline);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-fill-subtle);
+  color: var(--color-text);
+  font-family: var(--font-numeric);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  line-height: inherit;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+
+/* ---- Shared primitive: numerals ----------------------------------------------- */
+
+/* Version numbers and file sizes. Mono and tabular so digits line up and a
+   build number never reads as prose. Shared: hero, footer and the T3 download
+   cards all need it. */
+.home__numeric {
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tracking-normal);
+}
+
+
+/* ---- Shared primitive: buttons ----------------------------------------------- */
+
+.home__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  min-height: var(--control-height);
+  padding-inline: var(--space-md);
+  padding-block: var(--space-2xs);
+  border: var(--border-width-hairline) solid transparent;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base),
+    color var(--transition-base),
+    opacity var(--transition-base);
+}
+
+/* Deliberate: the primary button is INK, not clay. Clay stays rationed. */
+.home__btn--primary {
+  background-color: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-on-accent);
+}
+
+.home__btn--primary:hover {
+  opacity: var(--opacity-hover);
+}
+
+.home__btn--secondary {
+  background-color: transparent;
+  border-color: var(--color-hairline);
+  color: var(--color-text);
+}
+
+.home__btn--secondary:hover {
+  background-color: var(--color-fill-subtle);
+}
+
+/* "Coming soon" downloads: rendered, readable, but not actionable. */
+.home__btn:disabled,
+.home__btn[aria-disabled="true"] {
+  opacity: var(--opacity-disabled);
+  cursor: not-allowed;
+}
+
+.home__btn:disabled:hover,
+.home__btn[aria-disabled="true"]:hover {
+  background-color: transparent;
+  opacity: var(--opacity-disabled);
+}
+
+.home__btn--primary:disabled:hover,
+.home__btn--primary[aria-disabled="true"]:hover {
+  background-color: var(--color-ink);
+}
+
+
+/* ---- Shared primitive: links --------------------------------------------------- */
+
+.home__link {
+  color: var(--color-clay);
+  text-decoration: underline;
+  text-decoration-thickness: var(--border-width-hairline);
+  text-underline-offset: var(--space-3xs);
+  transition: opacity var(--transition-fast);
+}
+
+.home__link:hover {
+  opacity: var(--opacity-hover);
+}
+
+
+/* ---- Shared primitive: screenshot wells ------------------------------------------ */
+
+/* True black, because the app's own UI is dark and screenshots must not float
+   on a light rectangle. */
+.home__well {
+  overflow: hidden;
+  padding: var(--space-sm);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-black);
+}
+
+/* Stand-in for a screenshot file that has not been dropped in yet. */
+.home__well-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: var(--aspect-screenshot);
+  padding: var(--space-sm);
+  border: var(--border-hairline);
+  border-radius: var(--radius-md);
+  background-color: var(--color-stage);
+  color: var(--color-text-tertiary);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+
+/* ---- Reduced motion -------------------------------------------------------------- */
+
+/* Global kill switch. Kept here, with the base rules, so no section can ship an
+   animation that escapes it. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: var(--motion-reduced-duration) !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: var(--motion-reduced-duration) !important;
+    scroll-behavior: auto !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+
+/* =============================================================================
+   NAVBAR  (Navbar.jsx)
+   Sticky top bar: brand mark, section links, download CTA.
+   T2 fills this section. Leave the banner where it is.
+   ============================================================================= */
+
+.home__navbar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--z-navbar);
+  background-color: var(--color-paper);
+  /* Fallback for browsers without scroll-driven animations: the hairline is
+     simply always there. The @supports block at the end of this banner takes
+     it away again and hands it to the scroll. */
+  border-block-end: var(--border-hairline);
+}
+
+.home__navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  min-height: var(--navbar-height);
+}
+
+/* Skip link: carried off-screen by .home__visually-hidden until it takes
+   focus, then it lands in the corner as a real, readable control. */
+.home__skip-link:focus-visible {
+  position: fixed;
+  inset-block-start: var(--space-2xs);
+  inset-inline-start: var(--space-2xs);
+  z-index: var(--z-overlay);
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: var(--space-2xs) var(--space-sm);
+  overflow: visible;
+  clip-path: none;
+  border-radius: var(--radius-md);
+  background-color: var(--color-ink);
+  color: var(--color-on-accent);
+  font-size: var(--text-sm);
+  text-decoration: none;
+}
+
+/* The identity is the wordmark, not the logo drawing. */
+.home__wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  line-height: var(--leading-snug);
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* THE brand dot — one of the few clay marks the page spends its accent on. */
+.home__wordmark-dot {
+  flex: none;
+  width: var(--space-3xs);
+  height: var(--space-3xs);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-clay);
+}
+
+/* The three links fit on one line at 360px. `flex-wrap` is the safety valve:
+   below that, they stack instead of being clipped by the gutter. */
+.home__nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home__nav-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-height);
+  color: var(--color-text);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.home__nav-link:hover {
+  text-decoration: underline;
+  text-decoration-thickness: var(--border-width-hairline);
+  text-underline-offset: var(--space-3xs);
+}
+
+/* The hairline appears once the page has scrolled. CSS only: a scroll-driven
+   animation, no listener and no JavaScript anywhere near it. Browsers without
+   `animation-timeline` never enter the @supports block and keep the always-on
+   hairline declared above.
+   Under prefers-reduced-motion the global kill switch in BASE collapses the
+   duration, so the hairline snaps on instead of fading in. Both are correct. */
+@keyframes home-navbar-hairline {
+  from {
+    border-block-end-color: transparent;
+  }
+
+  to {
+    border-block-end-color: var(--color-hairline);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .home__navbar {
+    border-block-end-color: transparent;
+    animation-name: home-navbar-hairline;
+    animation-duration: auto;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 var(--navbar-height);
+  }
+}
+
+
+/* =============================================================================
+   HERO  (Hero.jsx)
+   Opening statement, primary download buttons, hero screenshot well.
+   T2 fills this section. Leave the banner where it is.
+   ============================================================================= */
+
+/* One row when there is a mark to sit beside, one column while there is not —
+   the flex basis is a measure, so the copy column can never go unreadable. */
+.home__hero-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2xl);
+}
+
+.home__hero-copy {
+  flex: 1 1 var(--measure-lede);
+  min-width: 0;
+}
+
+.home__hero-mark {
+  flex: 0 1 auto;
+}
+
+.home__hero-title {
+  max-width: var(--measure-heading);
+  margin-block: var(--space-2xs) 0;
+  font-size: var(--text-3xl);
+}
+
+.home__hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-block-start: var(--space-xl);
+}
+
+.home__hero-meta {
+  margin-block-start: var(--space-md);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+/* The privacy promise. The clay rule is the one highlight in the hero; the
+   button beside it stays ink. */
+.home__hero-privacy {
+  max-width: var(--measure-lede);
+  margin-block-start: var(--space-lg);
+  padding-inline-start: var(--space-sm);
+  border-inline-start: var(--border-width-hairline) solid var(--color-clay);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-relaxed);
+}
+
+/* The only motion on the page: one short fade-and-rise as the hero paints.
+   Gated behind @supports, and neutralised by the prefers-reduced-motion kill
+   switch in BASE, which collapses the duration so the copy simply appears. */
+@keyframes home-hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-2xs));
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .home__hero-copy {
+    animation: home-hero-rise var(--transition-slow) both;
+  }
+}
+
+
+/* =============================================================================
+   HOW IT WORKS  (HowItWorks.jsx)
+   The numbered three-or-four step walkthrough.
+   T2 fills this section. Leave the banner where it is.
+   ============================================================================= */
+
+.home__how-list {
+  display: grid;
+  gap: var(--space-lg);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: home-step;
+}
+
+.home__how-step {
+  counter-increment: home-step;
+  padding-block-start: var(--space-sm);
+  border-block-start: var(--border-hairline);
+}
+
+/* The step number is generated, so it duplicates the <ol> for sighted readers
+   only — assistive technology gets the list order itself, not a second copy. */
+.home__how-step::before {
+  content: counter(home-step, decimal-leading-zero);
+  display: block;
+  margin-block-end: var(--space-2xs);
+  color: var(--color-text);
+  font-family: var(--font-numeric);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+}
+
+.home__how-step-title {
+  margin-block: 0 var(--space-2xs);
+  font-size: var(--text-lg);
+}
+
+.home__how-step-body {
+  max-width: var(--measure-tight);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+
+/* =============================================================================
+   FEATURES  (Features.jsx)
+   Feature grid, including the colour-coded stroke types.
+   T2 fills this section. Leave the banner where it is.
+   ============================================================================= */
+
+.home__features-grid {
+  display: grid;
+  gap: var(--space-md);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home__feature {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-md);
+  border: var(--border-hairline);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-elevated);
+}
+
+.home__feature-title {
+  margin-block: 0 var(--space-2xs);
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+}
+
+.home__feature-body {
+  max-width: var(--measure-prose);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+}
+
+/* The AUTO badge, spelled as the app spells it. */
+.home__tag {
+  display: inline-block;
+  padding-inline: var(--space-3xs);
+  border-radius: var(--radius-xs);
+  background-color: var(--color-fill);
+  color: var(--color-text);
+  font-family: var(--font-numeric);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+}
+
+/* The one place on the site where the five stroke colours appear. Each stroke
+   is named in words too, so colour is never the only thing carrying meaning.
+   The keycap sets its own colour, so the keys stay ink. */
+.home__stroke-list {
+  display: grid;
+  gap: var(--space-2xs);
+  margin-block: 0 var(--space-sm);
+  padding: 0;
+  list-style: none;
+}
+
+.home__stroke {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2xs);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+.home__stroke--forehand {
+  color: var(--color-forehand);
+}
+
+.home__stroke--backhand {
+  color: var(--color-backhand);
+}
+
+.home__stroke--volley-fh {
+  color: var(--color-volley-fh);
+}
+
+.home__stroke--volley-bh {
+  color: var(--color-volley-bh);
+}
+
+.home__stroke--serve {
+  color: var(--color-serve);
+}
+
+
+/* =============================================================================
+   SCREENSHOTS  (Screenshots.jsx)
+   Screenshot wells and captions; uses .home__well / .home__well-placeholder.
+   T2 fills this section. Leave the banner where it is.
+   ============================================================================= */
+
+.home__shots-list {
+  display: grid;
+  gap: var(--space-xl);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home__shot {
+  margin: 0;
+}
+
+.home__shot-image {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+}
+
+.home__shot-caption {
+  max-width: var(--measure-lede);
+  margin-block-start: var(--space-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+
+/* =============================================================================
+   FILMING GUIDE  (FilmingGuide.jsx)
+   Camera-angle and framing advice for shooting on a phone.
+   T2 fills this section. Leave the banner where it is.
+   ============================================================================= */
+
+.home__guide-list {
+  display: grid;
+  gap: var(--space-lg);
+  margin: 0;
+}
+
+.home__guide-item {
+  padding-block-start: var(--space-sm);
+  border-block-start: var(--border-hairline);
+}
+
+.home__guide-term {
+  margin-block-end: var(--space-2xs);
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+}
+
+.home__guide-detail {
+  max-width: var(--measure-prose);
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+}
+
+
+/* =============================================================================
+   DOWNLOAD  (DownloadCards.jsx, InstallNotes.jsx)
+   macOS / Windows download cards, version + size + arch, the phone "copy link"
+   affordance, and the unsigned-installer disclosure.
+   T3 fills this section. Leave the banner where it is.
+   ============================================================================= */
+
+.home__download-grid {
+  display: grid;
+  gap: var(--space-md);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Column, so `margin-block-start: auto` on the action can bottom-align the two
+   buttons however long the copy above them runs. */
+.home__download-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-md);
+  border: var(--border-hairline);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-elevated);
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+/* The detected platform. Promotion only — the other card is never hidden or
+   weakened. The clay hairline and the badge are the accent's whole appearance
+   in this section, and both land one render after mount, so the transition is
+   what stops them snapping in. */
+.home__download-card--active {
+  border-color: var(--color-clay);
+  box-shadow: var(--shadow-soft);
+}
+
+.home__download-os {
+  margin-block: 0 var(--space-2xs);
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+}
+
+.home__download-badge {
+  margin-block-end: var(--space-2xs);
+  color: var(--color-clay);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-eyebrow);
+  line-height: var(--leading-snug);
+  text-transform: uppercase;
+}
+
+/* Two columns across the whole list, so the values line up. The row wrappers
+   are `display: contents` for exactly that reason — they carry no semantics of
+   their own, only the dt/dd pairing. */
+.home__download-meta {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-3xs) var(--space-sm);
+  margin-block: var(--space-sm);
+  font-size: var(--text-sm);
+}
+
+.home__download-meta-row {
+  display: contents;
+}
+
+.home__download-meta-term {
+  color: var(--color-text-secondary);
+}
+
+.home__download-meta-value {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* A field still holding a {{PLACEHOLDER}} in release.js. Secondary rather than
+   tertiary because it is real text a visitor has to read. */
+.home__download-meta-value--pending {
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.home__download-file {
+  margin-block-end: var(--space-md);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.home__download-action {
+  margin-block-start: auto;
+}
+
+.home__download-action .home__btn {
+  width: 100%;
+}
+
+.home__download-pending {
+  margin-block-start: var(--space-2xs);
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+  text-align: center;
+}
+
+
+/* ---- The phone affordance ---------------------------------------------------
+   A phone visitor cannot install a desktop app, so the useful thing to hand
+   them is the link. The download section itself is never hidden on mobile —
+   only this block, and only once the viewport is wide enough that a real
+   download is plausible (see RESPONSIVE). */
+
+.home__download-mobile {
+  margin-block-start: var(--space-lg);
+  padding: var(--space-md);
+  border: var(--border-hairline);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-elevated);
+}
+
+.home__download-mobile-line {
+  max-width: var(--measure-prose);
+  margin-block-end: var(--space-sm);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.home__download-mobile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.home__download-copy-status {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+/* Shown only when the clipboard API is missing or refused. `anywhere` keeps a
+   long URL from pushing the page sideways at 360px. */
+.home__download-copy-url {
+  margin-block-start: var(--space-2xs);
+  overflow-wrap: anywhere;
+  font-size: var(--text-sm);
+}
+
+
+/* ---- Install notes disclosure ------------------------------------------------
+   Native <details>/<summary>: the open/closed behaviour is the browser's, it
+   works without JavaScript, and it is keyboard-operable for free. The summary
+   keeps the global focus ring — nothing here sets `outline: none`. */
+
+.home__install {
+  margin-block-start: var(--space-lg);
+  border: var(--border-hairline);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-elevated);
+}
+
+.home__install-summary {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+  list-style-position: inside;
+  cursor: pointer;
+}
+
+.home__install-summary::marker {
+  color: var(--color-clay);
+}
+
+.home__install-body {
+  padding-inline: var(--space-md);
+  padding-block-end: var(--space-md);
+}
+
+.home__install-note {
+  max-width: var(--measure-prose);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+}
+
+.home__install-os {
+  margin-block-start: var(--space-md);
+}
+
+.home__install-os-title {
+  margin-block: 0 var(--space-2xs);
+  font-size: var(--text-base);
+}
+
+.home__install-steps {
+  max-width: var(--measure-prose);
+  margin-block-end: var(--space-2xs);
+  padding-inline-start: var(--space-md);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+}
+
+.home__install-steps > li + li {
+  margin-block-start: var(--space-2xs);
+}
+
+
+/* =============================================================================
+   FEEDBACK  (FeedbackForm.jsx)
+   Netlify-backed feedback form: fields, validation, success and error states.
+   T3 fills this section. Leave the banner where it is.
+   ============================================================================= */
+
+.home__feedback-useful {
+  margin-block-end: var(--space-xl);
+}
+
+.home__feedback-useful-title {
+  margin-block: 0 var(--space-2xs);
+  font-size: var(--text-md);
+}
+
+.home__feedback-list {
+  max-width: var(--measure-prose);
+  margin: 0;
+  padding-inline-start: var(--space-md);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+}
+
+.home__feedback-form {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.home__feedback-row {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.home__field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.home__label {
+  margin-block-end: var(--space-3xs);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+.home__label-optional {
+  margin-inline-start: var(--space-3xs);
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+}
+
+/* 16px on the inputs, deliberately: anything smaller makes iOS Safari zoom the
+   page when the field takes focus. */
+.home__input,
+.home__select,
+.home__textarea {
+  width: 100%;
+  max-width: 100%;
+  min-height: var(--control-height);
+  padding: var(--space-2xs) var(--space-xs);
+  border: var(--border-hairline);
+  border-radius: var(--radius-md);
+  background-color: var(--color-elevated);
+  color: var(--color-text);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  transition: border-color var(--transition-fast);
+}
+
+.home__textarea {
+  min-height: calc(var(--control-height) * 4);
+  resize: vertical;
+}
+
+.home__input[aria-invalid="true"],
+.home__textarea[aria-invalid="true"] {
+  border-color: var(--color-red);
+}
+
+.home__field-hint {
+  margin-block-start: var(--space-3xs);
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+}
+
+.home__field-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2xs);
+}
+
+.home__char-count {
+  margin-block-start: var(--space-3xs);
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+}
+
+.home__field-error {
+  margin-block-start: var(--space-2xs);
+  color: var(--color-red);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
+}
+
+.home__form-error {
+  max-width: var(--measure-prose);
+  margin-block-start: var(--space-2xs);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.home__form-error-text {
+  color: var(--color-red);
+  font-weight: var(--weight-medium);
+}
+
+/* The two live regions stay in the DOM at all times so a screen reader is
+   already watching them — hiding them with `display: none` and revealing them
+   later is exactly how a polite announcement gets swallowed. Empty, they draw
+   nothing and take no space; only the margin has to be collapsed. */
+.home__field-error:empty,
+.home__form-error:empty {
+  margin-block: 0;
+}
+
+.home__feedback-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+/* One of clay's few permitted outings: this is the single action the whole
+   page is built around. */
+.home__feedback-submit {
+  padding-inline: var(--space-lg);
+  border-color: var(--color-clay);
+  background-color: var(--color-clay);
+  color: var(--color-on-accent);
+  font-size: var(--text-base);
+}
+
+.home__feedback-submit:hover {
+  opacity: var(--opacity-hover);
+}
+
+/* Busy state: still unmistakably the submit button, just not pressable. */
+.home__feedback-submit:disabled,
+.home__feedback-submit:disabled:hover {
+  background-color: var(--color-clay);
+  opacity: var(--opacity-disabled);
+}
+
+.home__feedback-fallback {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.home__feedback-success {
+  padding: var(--space-lg);
+  border: var(--border-width-hairline) solid var(--color-clay);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-elevated);
+  box-shadow: var(--shadow-soft);
+}
+
+.home__feedback-success-title {
+  margin-block: 0 var(--space-2xs);
+  font-size: var(--text-lg);
+}
+
+.home__feedback-success-body {
+  max-width: var(--measure-prose);
+  margin-block-end: var(--space-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+}
+
+
+/* =============================================================================
+   FOOTER  (Footer.jsx)
+   Closing hairline, brand line, secondary links.
+   T2 fills this section. Leave the banner where it is.
+   ============================================================================= */
+
+.home__footer {
+  padding-block: var(--space-xl);
+  border-block-start: var(--border-hairline);
+  background-color: var(--color-paper);
+}
+
+.home__footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2xs) var(--space-lg);
+}
+
+.home__footer-line {
+  margin: 0;
+  font-size: var(--text-sm);
+}
+
+.home__footer-brand {
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.home__footer-line--promise {
+  color: var(--color-text-secondary);
+}
+
+
+/* =============================================================================
+   RESPONSIVE
+   All breakpoints collected here, smallest to largest. No @media blocks live
+   inside the section banners above (the reduced-motion query in BASE is the one
+   deliberate exception — it is a global reset concern, not a breakpoint).
+   T2 and T3 add their breakpoints here.
+   ============================================================================= */
+
+/* ---- 30rem / 480px — past the narrowest phone, the navbar can breathe ------- */
+@media (min-width: 30rem) {
+  .home__wordmark {
+    letter-spacing: var(--tracking-eyebrow);
+  }
+
+  .home__nav-list {
+    gap: var(--space-md);
+  }
+
+  .home__nav-link {
+    font-size: var(--text-sm);
+  }
+}
+
+/* ---- 42rem / 672px — two columns ------------------------------------------- */
+@media (min-width: 42rem) {
+  .home__how-list,
+  .home__features-grid,
+  .home__download-grid,
+  .home__feedback-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home__guide-list {
+    gap: var(--space-xl);
+  }
+
+  /* Wide enough that the visitor is plausibly on the machine they would
+     install on, so the "copy this link" line has done its job. The download
+     section itself stays visible at every width. */
+  .home__download-mobile {
+    display: none;
+  }
+}
+
+/* ---- 60rem / 960px — the wide layouts -------------------------------------- */
+@media (min-width: 60rem) {
+  .home__how-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .home__features-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

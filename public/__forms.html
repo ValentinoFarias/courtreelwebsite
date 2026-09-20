@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Netlify form detection</title>
+  </head>
+  <body>
+    <!--
+      Build-time crawler bait for Netlify Forms.
+      Netlify only registers a form it can find in static HTML at deploy time;
+      a React-rendered form is invisible to it and its POSTs 404 silently.
+      Field names here MUST stay in sync with the real feedback form.
+    -->
+    <form name="feedback" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="feedback" />
+      <input name="bot-field" /><input name="name" /><input name="email" />
+      <input name="platform" /><input name="topic" /><textarea name="message"></textarea>
+      <input name="appVersion" /><input name="userAgent" />
+    </form>
+  </body>
+</html>
