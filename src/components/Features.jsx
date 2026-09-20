@@ -24,10 +24,37 @@ import FrameStepper from "@/components/motion/FrameStepper";
 const strokes = [
   { key: "F", name: "Forehand", modifier: "forehand" },
   { key: "B", name: "Backhand", modifier: "backhand" },
-  { key: "V", name: "Forehand volley", modifier: "volley-fh" },
-  { key: "C", name: "Backhand volley", modifier: "volley-bh" },
+  { key: "V", name: "Forehand volley", modifier: "volley-fh", wip: true },
+  { key: "C", name: "Backhand volley", modifier: "volley-bh", wip: true },
   { key: "S", name: "Serve", modifier: "serve" },
 ];
+
+/*
+  Not shipped yet, marked up by hand: the words scribbled out with one clay
+  marker stroke (drawn right to left, small at the start and bigger as it goes)
+  and a handwritten note beside them. The scribble is decorative; the note says
+  the same thing in words, so colour never carries the meaning alone.
+*/
+function Struck({ children }) {
+  return (
+    <span className="home__feature-struck">
+      {children}
+      <svg
+        className="home__feature-scribble"
+        viewBox="0 0 100 20"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d="M99 11 L94 6 L90 15 L84 4 L78 16 L71 2 L64 18 L56 1 L48 18 L39 2 L31 19 L22 1 L14 18 L7 3 L2 12" />
+      </svg>
+    </span>
+  );
+}
+
+function WipNote() {
+  return <span className="home__feature-status">Work in progress</span>;
+}
 
 export default function Features() {
   return (
@@ -79,7 +106,14 @@ export default function Features() {
                   className={`home__stroke home__stroke--${stroke.modifier}`}
                 >
                   <Keycap>{stroke.key}</Keycap>
-                  <span>{stroke.name}</span>
+                  {stroke.wip ? (
+                    <>
+                      <Struck>{stroke.name}</Struck>
+                      <WipNote />
+                    </>
+                  ) : (
+                    <span>{stroke.name}</span>
+                  )}
                 </li>
               ))}
             </ul>
@@ -100,7 +134,10 @@ export default function Features() {
           </li>
 
           <li className="home__feature">
-            <h3 className="home__feature-title">Ball speed</h3>
+            <h3 className="home__feature-title home__feature-title--wip">
+              <Struck>Ball speed</Struck>
+              <WipNote />
+            </h3>
             <p className="home__feature-body">
               Calibrate the court once by clicking its four corners, then measure a shot
               by marking the ball across a few frames.

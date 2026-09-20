@@ -183,11 +183,16 @@ Worth knowing before changing anything:
   the first client render always agree and hydration never mismatches.
 - **One `<h1>` on the page**, and it belongs to the hero. Every section uses
   `<h2>` and carries `aria-labelledby`.
-- **Clay (`--color-clay`) is rationed.** It is the brand dot, the hero rule, the
-  detected-platform outline on a download card, links, and the feedback submit
-  button. The primary download buttons are deliberately ink, not clay. Note that
-  clay measures 4.27:1 on `--color-stage`, so clay *text* belongs on paper or on
-  an elevated card, never directly on a stage-coloured background.
+- **Clay (`--color-clay`) is the one accent.** It is the brand dot, links, the
+  how-it-works progress line, the "work in progress" marks, the detected-platform
+  outline on a download card, and the feedback submit button. Full-width clay
+  section bands were tried and dropped: sections stay paper or stage. The primary
+  download buttons are deliberately ink, not clay. The section eyebrows
+  ("Tennis training video", "What it does", …) and the 01–04 step numbers are
+  clay too. Plain clay measures only 4.27:1 on `--color-stage`, under the 4.5:1
+  floor for small text, so that small text uses `--color-clay-text` (`#a94529`,
+  the same orange a touch deeper: 4.62:1 on stage, 5.29:1 on paper). Marks and
+  lines keep `--color-clay`; do not use plain clay for small text on stage.
 - **Missing-asset convention:** never `import` an image that is not on disk
   (it fails the build). Declare it in a local array with an `available` flag —
   see §1.

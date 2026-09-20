@@ -1,4 +1,16 @@
+import { Caveat } from "next/font/google";
+
 import "@/assets/css/style.css";
+
+/* The handwritten note on the Ball speed card. Self-hosted by Next at build
+   time, so visitors never contact Google. Set on <html> so the :root token
+   --font-handwritten in style.css can read the variable. */
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: "600",
+  display: "swap",
+  variable: "--font-caveat",
+});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://courtreel.app";
 
@@ -54,7 +66,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={caveat.variable}>
       <body>{children}</body>
     </html>
   );

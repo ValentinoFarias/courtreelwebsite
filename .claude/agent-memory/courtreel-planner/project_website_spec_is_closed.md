@@ -48,6 +48,17 @@ facts: `--color-clay` is 4.9:1 on paper (spec says do not lighten it — correct
 leave alone) but only **4.27:1 on `--color-stage`**, so clay text must stay off
 stage-backed areas; in the download section it lives inside elevated cards.
 
+## Amendment: more clay in small marks, but not in bands (2026-09-20)
+
+Valentino found the page too flat. Clay now also colours the how-it-works
+progress line and the hand-drawn "Work in progress" marks on Features
+(handwriting font: Caveat via `next/font/google`, self-hosted). He also tried
+full-width clay section bands (Screenshots, Download, footer) and **rejected
+them** — do not put clay backgrounds on sections again. Sections stay paper or
+stage; the primary button stays ink. Section eyebrows and the 01–04 step
+numbers are clay, using `--color-clay-text` (`#a94529`), a slightly deeper clay,
+because plain clay is 4.27:1 on stage and fails the 4.5:1 floor for small text.
+
 ## Amendment: GSAP and three.js are allowed (2026-09-20)
 
 Valentino lifted the spec's "no animation libraries" ban for **GSAP (+ ScrollTrigger)
