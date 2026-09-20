@@ -21,8 +21,9 @@ const description =
 /*
   The link to this site gets pasted into WhatsApp, so the preview matters.
   /og.png (1200x630) does not exist yet — drop the file into /public and the
-  cards below start working with no code change. No favicon is declared here
-  on purpose: /icon.png does not exist and must not be invented.
+  cards below start working with no code change. The favicon is NOT declared
+  here: src/app/icon.svg is the brand mark, and Next emits its <link> from
+  that file convention on its own.
 */
 export const metadata = {
   metadataBase: new URL(siteUrl),
