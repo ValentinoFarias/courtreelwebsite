@@ -1118,10 +1118,10 @@ canvas {
 .home__frames-ball {
   position: absolute;
   inset-inline-start: 50%;
-  width: var(--space-3xs);
-  height: var(--space-3xs);
+  width: var(--space-2xs);
+  height: var(--space-2xs);
   border-radius: var(--radius-pill);
-  background-color: var(--color-text);
+  background-color: var(--color-clay);
   opacity: 0;
   transform: translate(-50%, -50%);
   transition: opacity var(--transition-fast);
@@ -1205,12 +1205,13 @@ canvas {
 }
 
 .home__speed-value {
+  color: var(--color-clay);
   font-size: var(--text-xl);
   font-weight: var(--weight-medium);
 }
 
 .home__speed-unit {
-  color: var(--color-text-secondary);
+  color: var(--color-clay-text);
   font-family: var(--font-numeric);
   font-size: var(--text-xs);
 }
