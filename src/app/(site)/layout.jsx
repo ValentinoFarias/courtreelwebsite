@@ -12,11 +12,11 @@ const caveat = Caveat({
   variable: "--font-caveat",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://courtreel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://cutshot.app";
 
-const title = "CourtReel — review your tennis training video";
+const title = "CutShot — review your tennis training video";
 const description =
-  "CourtReel is a free desktop app for macOS and Windows that turns tennis training video filmed on your phone into something you can actually study. Mark shots frame by frame, or let CourtReel detect forehands, backhands and serves for you. Everything runs on your own machine.";
+  "CutShot is a free desktop app for macOS and Windows that turns tennis training video filmed on your phone into something you can actually study. Mark shots frame by frame, or let CutShot detect forehands, backhands and serves for you. Everything runs on your own machine.";
 
 /*
   The link to this site gets pasted into WhatsApp, so the preview matters.
@@ -28,7 +28,7 @@ export const metadata = {
   metadataBase: new URL(siteUrl),
   title,
   description,
-  applicationName: "CourtReel",
+  applicationName: "CutShot",
   keywords: [
     "tennis",
     "video analysis",
@@ -43,7 +43,7 @@ export const metadata = {
   openGraph: {
     type: "website",
     url: "/",
-    siteName: "CourtReel",
+    siteName: "CutShot",
     title,
     description,
     locale: "en_GB",
@@ -52,7 +52,7 @@ export const metadata = {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "CourtReel — a desktop app for reviewing tennis training video.",
+        alt: "CutShot — a desktop app for reviewing tennis training video.",
       },
     ],
   },

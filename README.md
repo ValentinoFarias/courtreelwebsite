@@ -1,6 +1,6 @@
-# CourtReel website
+# CutShot website
 
-The one-page site for CourtReel: what the app does, where to download it, and a
+The one-page site for CutShot: what the app does, where to download it, and a
 form for testers to tell you what broke.
 
 Next.js App Router, plain `.jsx`, one CSS file, deployed on Netlify. No backend.
@@ -31,12 +31,12 @@ There is no `{{DOMAIN}}` token — the domain lives in two real places instead:
 
 - `NEXT_PUBLIC_SITE_URL` in Netlify (see *Deployment*). This is what makes the
   Open Graph image URL absolute, which is what makes the WhatsApp preview work.
-- The fallback in `src/app/(site)/layout.jsx`: `"https://courtreel.app"`. Change
+- The fallback in `src/app/(site)/layout.jsx`: `"https://cutshot.app"`. Change
   it if the real domain differs, so a local build is not lying.
 
 ### Missing brand assets
 
-`public/courtreel-mark.svg` (hero logo) and the four screenshots in
+`public/cutshot-mark.svg` (hero logo) and the four screenshots in
 `public/screenshots/` (`calendar.jpg`, `theplayer.jpg`, `analizer.jpg`,
 `shotreview.jpg`) are in place. Two brand assets are still missing. Neither is
 `import`ed — a static import of a missing file fails `next build` — so the site
@@ -88,8 +88,8 @@ to serve them and the repo would carry them forever.
    export const release = {
      version: "1.2.0",
      releasedAt: "2026-04-11",
-     mac: { url: "https://github.com/…/CourtReel-1.2.0.dmg", size: "118 MB", arch: "Apple Silicon" },
-     win: { url: "https://github.com/…/CourtReel-1.2.0.exe", size: "104 MB", arch: "64-bit" },
+     mac: { url: "https://github.com/…/CutShot-1.2.0.dmg", size: "118 MB", arch: "Apple Silicon" },
+     win: { url: "https://github.com/…/CutShot-1.2.0.exe", size: "104 MB", arch: "64-bit" },
      notes: ["Serve detection no longer fires on a ball toss."],
    };
    ```
@@ -249,4 +249,4 @@ on the line in `style.css` records the original value.
 
 **`--color-clay` was left exactly as specified** at `#b04a2f` (4.89:1 on paper) —
 the spec says do not lighten it, and it does not need lightening.
-# courtreelwebsite
+# cutshotwebsite

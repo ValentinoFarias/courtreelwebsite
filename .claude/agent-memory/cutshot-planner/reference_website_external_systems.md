@@ -1,6 +1,6 @@
 ---
 name: reference-website-external-systems
-description: Where CourtReel website things live outside the repo — installers on GitHub Releases, form submissions in the Netlify dashboard, hosting on Netlify
+description: Where CutShot website things live outside the repo — installers on GitHub Releases, form submissions in the Netlify dashboard, hosting on Netlify
 metadata:
   type: reference
 ---

@@ -13,7 +13,7 @@ import { release } from "@/data/release";
   set well back — see the HERO banner in style.css.
 */
 const brandMark = {
-  src: "/courtreel-mark.svg",
+  src: "/cutshot-mark.svg",
   alt: "",
   width: 1024,
   height: 1024,
@@ -46,7 +46,7 @@ export default function Hero() {
           </h1>
 
           <p className="home__lede">
-            CourtReel is a desktop app for macOS and Windows that turns the training
+            CutShot is a desktop app for macOS and Windows that turns the training
             video you filmed on your phone into something you can actually study. It is
             made for the players and coaches who record their own sessions and want a
             proper look at them afterwards.

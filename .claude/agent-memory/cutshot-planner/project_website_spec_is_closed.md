@@ -1,6 +1,6 @@
 ---
 name: project-website-spec-is-closed
-description: The CourtReel website build spec is authoritative and closed — stack, palette, sections and form handling are decided; {{PLACEHOLDER}} values stay literal and are never asked about
+description: The CutShot website build spec is authoritative and closed — stack, palette, sections and form handling are decided; {{PLACEHOLDER}} values stay literal and are never asked about
 metadata:
   type: project
 ---
@@ -29,7 +29,7 @@ own visual language.
 **How to apply:** treat `{{DOMAIN}}`, `{{MAC_DOWNLOAD_URL}}`, `{{CONTACT_EMAIL}}`
 etc. as literal strings to ship, collected into a checklist at the top of the
 README — never as questions for the user mid-task. Same for the brand assets,
-which do not exist yet. See [[project-two-courtreel-repos]] and
+which do not exist yet. See [[project-two-cutshot-repos]] and
 [[reference-website-external-systems]].
 
 ## The one sanctioned deviation from the spec (2026-09-20)

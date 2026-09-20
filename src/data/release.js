@@ -1,5 +1,5 @@
 /**
- * Single source of truth for the current CourtReel build.
+ * Single source of truth for the current CutShot build.
  *
  * The `{{...}}` values are LITERAL placeholders. Replace them by hand when a
  * build is published; nothing generates them. Until a download URL is filled

@@ -29,7 +29,7 @@ const tips = [
   {
     term: "iPhone video may not play",
     detail:
-      "iPhones record HEVC .mov by default, and those files may not play in CourtReel. Set Settings → Camera → Formats to “Most Compatible” before you film, or convert the file to H.264 MP4 afterwards.",
+      "iPhones record HEVC .mov by default, and those files may not play in CutShot. Set Settings → Camera → Formats to “Most Compatible” before you film, or convert the file to H.264 MP4 afterwards.",
   },
 ];
 

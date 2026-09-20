@@ -25,7 +25,7 @@ export default function Navbar() {
 
       <nav className="home__container home__navbar-inner" aria-label="Primary">
         <a className="home__wordmark" href="/">
-          CourtReel
+          CutShot
           <span className="home__wordmark-dot" aria-hidden="true" />
         </a>
 

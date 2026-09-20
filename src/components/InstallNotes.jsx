@@ -24,7 +24,7 @@ export default function InstallNotes() {
 
       <div className="home__install-body">
         <p className="home__install-note">
-          CourtReel is not code-signed. A signing certificate costs money every
+          CutShot is not code-signed. A signing certificate costs money every
           year, and this is a test build, so I have not bought one yet. Your
           computer cannot tell an unsigned app from a dangerous one, so it warns
           you about both. Here is how to get past it.
@@ -33,7 +33,7 @@ export default function InstallNotes() {
         <div className="home__install-os">
           <h3 className="home__install-os-title">On macOS</h3>
           <ol className="home__install-steps">
-            <li>Open the .dmg and drag CourtReel into Applications.</li>
+            <li>Open the .dmg and drag CutShot into Applications.</li>
             <li>
               Right-click the app in Applications and choose <strong>Open</strong>,
               then <strong>Open</strong> again in the dialog that appears.
@@ -41,7 +41,7 @@ export default function InstallNotes() {
             <li>
               If that dialog never offers you an Open button, go to{" "}
               <strong>System Settings → Privacy &amp; Security</strong>, scroll to
-              the note about CourtReel being blocked, and click{" "}
+              the note about CutShot being blocked, and click{" "}
               <strong>Open Anyway</strong>.
             </li>
           </ol>

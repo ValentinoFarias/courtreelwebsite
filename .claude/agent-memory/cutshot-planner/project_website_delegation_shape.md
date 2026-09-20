@@ -1,6 +1,6 @@
 ---
 name: project-website-delegation-shape
-description: How CourtReel website work is chunked and delegated — three sequential tasks over one shared CSS file, and the fact that the coder/ml-specialist agent types do not exist in this environment
+description: How CutShot website work is chunked and delegated — three sequential tasks over one shared CSS file, and the fact that the coder/ml-specialist agent types do not exist in this environment
 metadata:
   type: project
 ---

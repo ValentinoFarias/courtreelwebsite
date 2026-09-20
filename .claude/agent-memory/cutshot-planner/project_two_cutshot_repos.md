@@ -1,17 +1,17 @@
 ---
-name: project-two-courtreel-repos
-description: "courtreel website" is the marketing site, a DIFFERENT repo from the CourtReel Electron app — the planner's roadmap.md/STATUS.md and the recall-first priority ladder belong to the app, not here
+name: project-two-cutshot-repos
+description: "cutshot website" is the marketing site, a DIFFERENT repo from the CutShot Electron app — the planner's roadmap.md/STATUS.md and the recall-first priority ladder belong to the app, not here
 metadata:
   type: project
 ---
 
-There are two separate CourtReel codebases. This working directory
-(`.../09 - 2026/courtreel website`) is the **public one-page marketing site**
+There are two separate CutShot codebases. This working directory
+(`.../09 - 2026/cutshot website`) is the **public one-page marketing site**
 (Next.js 16 App Router + vanilla CSS + Netlify Forms, no CMS, no DB). The
-CourtReel **app** (Electron, YOLO → pose → event detector → stroke classifier)
+CutShot **app** (Electron, YOLO → pose → event detector → stroke classifier)
 lives elsewhere and is the thing the site advertises.
 
-**Why:** the courtreel-planner agent definition is written for the app — it says
+**Why:** the cutshot-planner agent definition is written for the app — it says
 to open `roadmap.md`, `STATUS.md` and an architecture-decisions file, and to
 prioritise `broken > candidate recall > infra > classifier`. None of those files
 exist in the website repo and the recall ladder has no meaning here. Confirmed

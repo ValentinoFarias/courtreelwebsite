@@ -208,7 +208,7 @@ export default function FeedbackForm() {
       <div className="home__feedback-watermark" aria-hidden="true">
         <Image
           className="home__watermark-image"
-          src="/courtreel-mark.svg"
+          src="/cutshot-mark.svg"
           alt=""
           width={1024}
           height={1024}
@@ -222,7 +222,7 @@ export default function FeedbackForm() {
             This is a test build, and you are the test
           </h2>
           <p className="home__lede">
-            CourtReel gets better only from people telling me where it fell over.
+            CutShot gets better only from people telling me where it fell over.
             You do not have to be diplomatic or thorough — one sentence is a real
             contribution.
           </p>

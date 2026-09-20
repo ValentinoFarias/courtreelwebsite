@@ -237,7 +237,7 @@ export default function DownloadCards() {
             only this one line is hidden once there is room for a real download. */}
         <div className="home__download-mobile">
           <p className="home__download-mobile-line">
-            Reading this on a phone? CourtReel is a desktop app. Send yourself the
+            Reading this on a phone? CutShot is a desktop app. Send yourself the
             link and open it on your computer.
           </p>
 

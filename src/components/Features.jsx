@@ -66,7 +66,7 @@ export default function Features() {
             Built around the frame of contact
           </h2>
           <p className="home__lede">
-            Everything CourtReel does comes back to one thing: finding the exact
+            Everything CutShot does comes back to one thing: finding the exact
             instant the ball met the strings, and making it easy to look at again.
           </p>
         </div>

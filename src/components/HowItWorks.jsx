@@ -24,11 +24,11 @@ const steps = [
   },
   {
     title: "Import",
-    body: "Drag MP4, MOV or M4V files onto the training calendar. Each one is copied into CourtReel’s own library, so the original can be moved or deleted afterwards.",
+    body: "Drag MP4, MOV or M4V files onto the training calendar. Each one is copied into CutShot’s own library, so the original can be moved or deleted afterwards.",
   },
   {
     title: "Mark or auto-detect",
-    body: "Press one key at the frame of contact to mark a shot, or run “Analyze Video” and let CourtReel find the strokes for you.",
+    body: "Press one key at the frame of contact to mark a shot, or run “Analyze Video” and let CutShot find the strokes for you.",
     tape: true,
   },
   {
