@@ -1416,6 +1416,42 @@ canvas {
   width: 100%;
 }
 
+/* The access-code gate above the two cards. One field, centred with the
+   section head, because the code is per person and not per platform. */
+.home__gate {
+  display: grid;
+  gap: var(--space-2xs);
+  max-width: 24rem;
+  margin-block-end: var(--space-md);
+}
+
+.home__gate-label {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.home__gate-input {
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.home__gate-input:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.home__gate-note {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+}
+
 /* macOS offers two builds, so the action area can hold more than one button. */
 .home__download-choice {
   margin: 0;

@@ -13,23 +13,15 @@
 export const release = {
   version: "1.2.0",
   releasedAt: "2026-09-22",
+  /* No URLs here on purpose. This file is imported by client components, so
+     anything in it ships to the browser; the download links live server-side
+     in src/lib/downloads.js and are handed out by /api/download only once the
+     access code checks out. `id` is what the page posts to ask for a build. */
   mac: {
-    appleSilicon: {
-      url: "https://github.com/ValentinoFarias/cutshotwebsite/releases/download/app-v1.2.0/CutShot-1.2.0-mac-arm64.dmg",
-      size: "186 MB",
-      arch: "Apple Silicon (M1–M4)",
-    },
-    intel: {
-      url: "https://github.com/ValentinoFarias/cutshotwebsite/releases/download/app-v1.2.0/CutShot-1.2.0-mac-x64.dmg",
-      size: "193 MB",
-      arch: "Intel",
-    },
+    appleSilicon: { id: "mac-arm64", size: "186 MB", arch: "Apple Silicon (M1–M4)", published: true },
+    intel: { id: "mac-intel", size: "193 MB", arch: "Intel", published: true },
   },
-  win: {
-    url: "https://github.com/ValentinoFarias/cutshotwebsite/releases/download/app-v1.2.0/CutShot-1.2.0-win-x64.exe",
-    size: "174 MB",
-    arch: "64-bit",
-  },
+  win: { id: "win-x64", size: "174 MB", arch: "64-bit", published: true },
   /**
    * CutShot asks for a key the first time it opens. Keys are emailed as text to
    * paste: no account, no sign-up, and the key is checked on the machine

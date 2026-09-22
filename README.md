@@ -120,6 +120,41 @@ not up yet and it degrades honestly.
 
 ---
 
+## 3b. The download access code
+
+The download buttons are behind a code. It is **not** in this repository — this
+repo is public, so a code committed here would be a code anyone can read. It
+lives in one environment variable on the host:
+
+```
+CUTSHOT_DOWNLOAD_CODE=TENNISCOTHAM
+```
+
+Set it in **Netlify → Site configuration → Environment variables**, then
+redeploy. Changing the code later is that one field and a redeploy; no code
+change.
+
+**With the variable unset, every download answers 503** and the page says
+downloads are not switched on yet. That is deliberate: the alternative is a
+fallback code in the source, which is no code at all.
+
+How it works: the page posts the build id and whatever the visitor typed to
+`POST /api/download` (`src/app/api/download/route.js`). Only a correct code gets
+a URL back, and the browser is then sent to it. The file URLs live in
+`src/lib/downloads.js`, which is **server-only — never import it from a
+component**, or the links end up in the browser bundle and the gate is
+decoration.
+
+**What the gate does and does not do.** It stops a visitor who lands on the site,
+and it keeps the URLs out of the page source. It cannot stop anyone who already
+has a direct link, or who browses this repo's Releases, since the assets are
+public. Anyone who passes the gate once can read the URL in their network tab
+and pass it on. Closing that needs private assets and short-lived signed links —
+a different job, worth doing only if the downloads ever need to be genuinely
+restricted.
+
+---
+
 ## 4. Reading form submissions
 
 **Netlify dashboard → Forms → `feedback`.** Every submission lands there with

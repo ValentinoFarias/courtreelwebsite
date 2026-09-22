@@ -105,9 +105,9 @@ function detectPlatform() {
  * @param {"macos"|"windows"} [props.platform] - which build this card is for.
  * @param {boolean} [props.active] - true only once detection has matched this card.
  */
-function DownloadCard({ platform = "macos", active = false }) {
+function DownloadCard({ platform = "macos", active = false, busyId = null, onDownload }) {
   const entry = builds[platform] ?? builds.macos;
-  const anyReady = entry.downloads.some((download) => isDownloadReady(download.build.url));
+  const anyReady = entry.downloads.some((download) => download.build.published);
 
   const cardClass = active
     ? "home__download-card home__download-card--active"
@@ -161,17 +161,21 @@ function DownloadCard({ platform = "macos", active = false }) {
       <div className="home__download-action">
         {entry.downloads.map((download) => (
           <p className="home__download-choice" key={download.id}>
-            {isDownloadReady(download.build.url) ? (
-              /* The binaries live on GitHub Releases, not in /public — these are
-                 absolute, external links. */
-              <a className="home__btn home__btn--primary" href={download.build.url} rel="noopener">
-                {download.action}
-              </a>
-            ) : (
-              <button className="home__btn home__btn--primary" type="button" disabled>
-                Coming soon
-              </button>
-            )}
+            {/* A button, not a link: the file URL is not in this page. The
+                access code is posted to /api/download, which answers with the
+                link only if it checks out, and the browser is sent there. */}
+            <button
+              className="home__btn home__btn--primary"
+              type="button"
+              disabled={!download.build.published || busyId !== null}
+              onClick={() => onDownload(download.build.id)}
+            >
+              {busyId === download.build.id
+                ? "Checking…"
+                : download.build.published
+                  ? download.action
+                  : "Coming soon"}
+            </button>
           </p>
         ))}
       </div>
@@ -193,6 +197,52 @@ export default function DownloadCards() {
   const [detected, setDetected] = useState(null);
   const [copyState, setCopyState] = useState("idle"); /* idle | copied | failed */
   const [pageUrl, setPageUrl] = useState("");
+  const [code, setCode] = useState("");
+  const [busyId, setBusyId] = useState(null);
+  const [gateError, setGateError] = useState(null);
+
+  /**
+   * Asks the server for a download link, handing it the code the visitor typed.
+   *
+   * Everything a wrong code can learn from this is "no". The link only exists
+   * in the response to a correct one, and the browser is sent straight to it,
+   * so the page never has to hold it either.
+   *
+   * @param {string} buildId
+   */
+  async function handleDownload(buildId) {
+    const typed = code.trim();
+    if (typed === "") {
+      setGateError("Enter the access code first.");
+      return;
+    }
+
+    setBusyId(buildId);
+    setGateError(null);
+
+    try {
+      const response = await fetch("/api/download", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ build: buildId, code: typed }),
+      });
+      const payload = await response.json().catch(() => null);
+
+      if (response.ok && payload?.url) {
+        window.location.assign(payload.url);
+        return;
+      }
+      if (response.status === 503) {
+        setGateError("Downloads are not switched on yet. Tell Valentino.");
+        return;
+      }
+      setGateError("That code is not right. Check the email it came in.");
+    } catch {
+      setGateError("Could not reach the server. Try again in a moment.");
+    } finally {
+      setBusyId(null);
+    }
+  }
 
   /* Detection, after mount. This is the whole hydration-safety story. */
   useEffect(() => {
@@ -252,9 +302,44 @@ export default function DownloadCards() {
           </p>
         </div>
 
+        {/* The gate. One field for both cards: the code is per person, not per
+            platform, and asking twice would only look like a mistake. */}
+        <div className="home__gate">
+          <label className="home__gate-label" htmlFor="home-download-code">
+            Access code
+          </label>
+          <input
+            id="home-download-code"
+            className="home__gate-input"
+            name="code"
+            type="text"
+            autoComplete="off"
+            spellCheck={false}
+            placeholder="From your email"
+            value={code}
+            onChange={(event) => {
+              setCode(event.target.value);
+              setGateError(null);
+            }}
+          />
+          <p className="home__gate-note" role="status" aria-live="polite">
+            {gateError ?? "The downloads are for the club trial, so they are behind a code."}
+          </p>
+        </div>
+
         <ul className="home__download-grid">
-          <DownloadCard platform="macos" active={detected === "macos"} />
-          <DownloadCard platform="windows" active={detected === "windows"} />
+          <DownloadCard
+            platform="macos"
+            active={detected === "macos"}
+            busyId={busyId}
+            onDownload={handleDownload}
+          />
+          <DownloadCard
+            platform="windows"
+            active={detected === "windows"}
+            busyId={busyId}
+            onDownload={handleDownload}
+          />
         </ul>
 
         {/* Phone visitors: a desktop app cannot be installed here, so the useful
