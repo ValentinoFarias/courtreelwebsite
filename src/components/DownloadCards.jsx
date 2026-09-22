@@ -426,7 +426,8 @@ export default function DownloadCards() {
             autoComplete="off"
             autoFocus
             spellCheck={false}
-            placeholder="TENNIS…"
+            /* No placeholder: an example of the code is half the code. The
+               label above already says what the field is. */
             value={code}
             onChange={(event) => {
               setCode(event.target.value);
