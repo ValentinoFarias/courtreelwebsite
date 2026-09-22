@@ -1416,6 +1416,15 @@ canvas {
   width: 100%;
 }
 
+/* macOS offers two builds, so the action area can hold more than one button. */
+.home__download-choice {
+  margin: 0;
+}
+
+.home__download-choice + .home__download-choice {
+  margin-block-start: var(--space-2xs);
+}
+
 .home__download-pending {
   margin-block-start: var(--space-2xs);
   color: var(--color-text-secondary);

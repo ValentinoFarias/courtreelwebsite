@@ -18,12 +18,19 @@ Nothing on the list generates itself. Everything here is a literal
 | Placeholder | Where | What to put there |
 | --- | --- | --- |
 | `{{YYYY-MM-DD}}` | `src/data/release.js` → `releasedAt` | The release date. Not currently rendered anywhere, but keep it true — it is the record of when this build went out. |
-| `{{MAC_DOWNLOAD_URL}}` | `src/data/release.js` → `mac.url` | Absolute GitHub Releases URL to the `.dmg`. Until it is real, the macOS button renders **"Coming soon"** and is disabled. |
-| `{{WIN_DOWNLOAD_URL}}` | `src/data/release.js` → `win.url` | Same for the Windows `.exe`. |
-| `{{NN MB}}` (×2) | `src/data/release.js` → `mac.size`, `win.size` | File size as you want it read, e.g. `118 MB`. While it is a placeholder the card shows *"not published yet"*. |
-| `{{Apple Silicon}}` | `src/data/release.js` → `mac.arch` | e.g. `Apple Silicon`, or `Apple Silicon & Intel` if the build is universal. The Windows card already says `64-bit`. |
-| `{{one line per change in this build}}` | `src/data/release.js` → `notes` | One string per change. Not rendered on the page yet — it exists so the data file is the whole truth about a build. |
-| `{{CONTACT_EMAIL}}` (×4) | `src/components/FeedbackForm.jsx` | Your real email. Four spots: the `mailto:` href and the visible link text, in both the error state and the quiet fallback under the form. Find and replace. |
+All of these were filled in on 2026-09-22 for the 1.2.0 release: `release.js`
+carries real URLs, sizes and dates, and `FeedbackForm.jsx` carries the real
+address. The table is kept as the description of what each field is for.
+
+| Field | Where | What goes there |
+| --- | --- | --- |
+| `releasedAt` | `src/data/release.js` | The release date. Not rendered, but keep it true — it is the record of when a build went out. |
+| `mac.appleSilicon.url`, `mac.intel.url` | `src/data/release.js` | Absolute GitHub Releases URLs to the two `.dmg` files. macOS needs two builds: one executable cannot serve both CPUs. Until a URL is real, that button renders **"Coming soon"** and is disabled. |
+| `win.url` | `src/data/release.js` | Same for the Windows `.exe`. |
+| `size` (×3) | `src/data/release.js` | File size as you want it read, e.g. `186 MB`. While it is a placeholder the row shows *"not published yet"*. |
+| `arch` (×3) | `src/data/release.js` | Labels the download rows and the buttons: `Apple Silicon (M1–M4)`, `Intel`, `64-bit`. |
+| `trial.days`, `trial.contact` | `src/data/release.js` | The trial length the download section quotes, and the address the "email me for a key" link points at. The app asks for a key on first launch, so this is not decoration. |
+| `notes` | `src/data/release.js` | One string per change. Not rendered on the page yet — it exists so the data file is the whole truth about a build. |
 
 ### The domain
 
@@ -81,8 +88,14 @@ There is no test suite and no linter config. `npm run build` is the gate.
 The binaries are ~100 MB. They do **not** go in `public/` — Netlify would have
 to serve them and the repo would carry them forever.
 
-1. Build the app and upload both files to **GitHub Releases** as release assets.
-2. Copy the two asset URLs.
+1. Build the app — three packages now: `npm run dist:mac` (Apple Silicon),
+   `npm run dist:mac:intel` and `npm run dist:win`, each in its own invocation.
+2. Upload all three to **GitHub Releases on this repo** and copy the URLs:
+   ```bash
+   gh release create app-v1.3.0 path/to/*.dmg path/to/*.exe --title "CutShot 1.3.0" --notes "…"
+   ```
+   The repo is public, so the asset URLs need no login. They are predictable:
+   `https://github.com/ValentinoFarias/cutshotwebsite/releases/download/<tag>/<file>`.
 3. Edit `src/data/release.js` — and nothing else:
    ```js
    export const release = {

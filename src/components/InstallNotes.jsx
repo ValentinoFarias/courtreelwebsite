@@ -65,6 +65,25 @@ export default function InstallNotes() {
             once the build is signed.
           </p>
         </div>
+
+        <div className="home__install-os">
+          <h3 className="home__install-os-title">Then: your key</h3>
+          <ol className="home__install-steps">
+            <li>Open CutShot. The first time, it asks for a trial key.</li>
+            <li>
+              Copy the long <code>CUTSHOT-1…</code> line from the email — all of
+              it, however your mail app chooses to wrap it — paste it in and press{" "}
+              <strong>Activate</strong>.
+            </li>
+          </ol>
+          <p className="home__install-note">
+            That is the whole activation: no account, no password, and nothing
+            leaves your computer. If you close the box by accident, the button at
+            the top right of the window opens it again. Without a key you can
+            still import, watch and tag video by hand — it is the automatic
+            stroke detection that waits for one.
+          </p>
+        </div>
       </div>
     </details>
   );

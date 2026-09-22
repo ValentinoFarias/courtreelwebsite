@@ -441,8 +441,8 @@ export default function FeedbackForm() {
                     </span>{" "}
                     <span>
                       Nothing is lost — copy your note and email it to{" "}
-                      <a className="home__link" href="mailto:{{CONTACT_EMAIL}}">
-                        {"{{CONTACT_EMAIL}}"}
+                      <a className="home__link" href="mailto:valentinofariascarrion@gmail.com">
+                        {"valentinofariascarrion@gmail.com"}
                       </a>
                       .
                     </span>
@@ -452,8 +452,8 @@ export default function FeedbackForm() {
 
               <p className="home__feedback-fallback">
                 Rather just email me?{" "}
-                <a className="home__link" href="mailto:{{CONTACT_EMAIL}}">
-                  {"{{CONTACT_EMAIL}}"}
+                <a className="home__link" href="mailto:valentinofariascarrion@gmail.com">
+                  {"valentinofariascarrion@gmail.com"}
                 </a>
               </p>
             </form>

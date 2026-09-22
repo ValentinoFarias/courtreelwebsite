@@ -44,20 +44,29 @@ const COPY_RESET_MS = 2400;
    a leftover {{PLACEHOLDER}} is not something to show a visitor. */
 const isFilledIn = isDownloadReady;
 
+/* One card per platform, but a platform can offer more than one file: macOS
+   ships a separate build per CPU, because one executable cannot serve both.
+   Each entry in `downloads` becomes its own button with its own size. */
 const builds = {
   macos: {
     id: "macos",
     name: "macOS",
-    action: "Download for macOS",
     file: "A .dmg you drag into Applications.",
-    build: release.mac,
+    downloads: [
+      { id: "apple-silicon", action: "Download for Apple Silicon", build: release.mac.appleSilicon },
+      { id: "intel", action: "Download for Intel", build: release.mac.intel },
+    ],
+    /* Said on the card rather than buried in the notes: taking the wrong one
+       is the single most likely way a visitor ends up with an app that will
+       not open. */
+    hint: "Apple menu → About This Mac tells you which chip you have.",
   },
   windows: {
     id: "windows",
     name: "Windows",
-    action: "Download for Windows",
     file: "An .exe installer.",
-    build: release.win,
+    downloads: [{ id: "x64", action: "Download for Windows", build: release.win }],
+    hint: null,
   },
 };
 
@@ -98,8 +107,7 @@ function detectPlatform() {
  */
 function DownloadCard({ platform = "macos", active = false }) {
   const entry = builds[platform] ?? builds.macos;
-  const { build } = entry;
-  const ready = isDownloadReady(build.url);
+  const anyReady = entry.downloads.some((download) => isDownloadReady(download.build.url));
 
   const cardClass = active
     ? "home__download-card home__download-card--active"
@@ -126,46 +134,53 @@ function DownloadCard({ platform = "macos", active = false }) {
           </dd>
         </div>
 
-        <div className="home__download-meta-row">
-          <dt className="home__download-meta-term">Size</dt>
-          <dd className="home__download-meta-value">
-            {isFilledIn(build.size) ? (
-              <span className="home__numeric">{build.size}</span>
-            ) : (
-              <span className="home__download-meta-value--pending">not published yet</span>
-            )}
-          </dd>
-        </div>
-
-        <div className="home__download-meta-row">
-          <dt className="home__download-meta-term">Architecture</dt>
-          <dd className="home__download-meta-value">
-            {isFilledIn(build.arch) ? (
-              build.arch
-            ) : (
-              <span className="home__download-meta-value--pending">not published yet</span>
-            )}
-          </dd>
-        </div>
+        {/* One row per file the platform offers: on macOS the two builds differ
+            in both size and CPU, so a single row could only lie about one. */}
+        {entry.downloads.map((download) => (
+          <div className="home__download-meta-row" key={download.id}>
+            <dt className="home__download-meta-term">
+              {isFilledIn(download.build.arch) ? (
+                download.build.arch
+              ) : (
+                <span className="home__download-meta-value--pending">not published yet</span>
+              )}
+            </dt>
+            <dd className="home__download-meta-value">
+              {isFilledIn(download.build.size) ? (
+                <span className="home__numeric">{download.build.size}</span>
+              ) : (
+                <span className="home__download-meta-value--pending">not published yet</span>
+              )}
+            </dd>
+          </div>
+        ))}
       </dl>
 
       <p className="home__download-file">{entry.file}</p>
 
       <div className="home__download-action">
-        {ready ? (
-          /* The binaries live on GitHub Releases, not in /public — these are
-             absolute, external links. */
-          <a className="home__btn home__btn--primary" href={build.url} rel="noopener">
-            {entry.action}
-          </a>
-        ) : (
-          <button className="home__btn home__btn--primary" type="button" disabled>
-            Coming soon
-          </button>
-        )}
+        {entry.downloads.map((download) => (
+          <p className="home__download-choice" key={download.id}>
+            {isDownloadReady(download.build.url) ? (
+              /* The binaries live on GitHub Releases, not in /public — these are
+                 absolute, external links. */
+              <a className="home__btn home__btn--primary" href={download.build.url} rel="noopener">
+                {download.action}
+              </a>
+            ) : (
+              <button className="home__btn home__btn--primary" type="button" disabled>
+                Coming soon
+              </button>
+            )}
+          </p>
+        ))}
       </div>
 
-      {ready ? null : (
+      {entry.hint && anyReady ? (
+        <p className="home__download-pending">{entry.hint}</p>
+      ) : null}
+
+      {anyReady ? null : (
         <p className="home__download-pending">
           The {entry.name} build is not uploaded yet.
         </p>
@@ -219,11 +234,21 @@ export default function DownloadCards() {
         <div className="home__section-head">
           <p className="home__eyebrow">Download</p>
           <h2 id="home-download-title" className="home__section-title">
-            Free, for macOS and Windows
+            For macOS and Windows
           </h2>
           <p className="home__lede">
-            One file, no account, no sign-up. Both builds are here — take whichever
-            matches the machine you edit on, not the one you are reading this on.
+            One file, no account, no sign-up. Take the build that matches the
+            machine you review video on, not the one you are reading this on.
+          </p>
+          <p className="home__lede">
+            CutShot is in a {release.trial.days}-day trial, so it asks for a key
+            the first time it opens.{" "}
+            <a className="home__link" href={`mailto:${release.trial.contact}?subject=CutShot%20trial%20key`}>
+              Email me for one
+            </a>{" "}
+            and I will send it back as a line of text to paste in. Nothing is
+            checked online: the key is read on your own computer, and so is every
+            video you import.
           </p>
         </div>
 
