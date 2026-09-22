@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import InstallNotes from "@/components/InstallNotes";
 import { isDownloadReady, release } from "@/data/release";
@@ -200,23 +200,35 @@ export default function DownloadCards() {
   const [code, setCode] = useState("");
   const [busyId, setBusyId] = useState(null);
   const [gateError, setGateError] = useState(null);
+  /* The build the visitor asked for while the dialog is up, or null. */
+  const [pendingBuild, setPendingBuild] = useState(null);
+  /* A code that has already worked this visit. Asking again for the second
+     platform would read as a malfunction, not as security. */
+  const [unlockedCode, setUnlockedCode] = useState(null);
+  const dialogRef = useRef(null);
+
+  /* Native <dialog>: the focus trap, the Escape key and the backdrop are the
+     browser's, and all three are things a hand-rolled overlay gets wrong.
+     Opening and closing has to be imperative, hence the ref. */
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    if (pendingBuild && !dialog.open) dialog.showModal();
+    if (!pendingBuild && dialog.open) dialog.close();
+  }, [pendingBuild]);
 
   /**
-   * Asks the server for a download link, handing it the code the visitor typed.
+   * Asks the server for a download link, handing it a code.
    *
-   * Everything a wrong code can learn from this is "no". The link only exists
-   * in the response to a correct one, and the browser is sent straight to it,
-   * so the page never has to hold it either.
+   * Everything a wrong code learns from this is "no". The link only exists in
+   * the response to a correct one, and the browser is sent straight to it, so
+   * the page never has to hold it either.
    *
    * @param {string} buildId
+   * @param {string} typed
    */
-  async function handleDownload(buildId) {
-    const typed = code.trim();
-    if (typed === "") {
-      setGateError("Enter the access code first.");
-      return;
-    }
-
+  async function requestDownload(buildId, typed) {
     setBusyId(buildId);
     setGateError(null);
 
@@ -229,6 +241,8 @@ export default function DownloadCards() {
       const payload = await response.json().catch(() => null);
 
       if (response.ok && payload?.url) {
+        setUnlockedCode(typed);
+        setPendingBuild(null);
         window.location.assign(payload.url);
         return;
       }
@@ -236,12 +250,33 @@ export default function DownloadCards() {
         setGateError("Downloads are not switched on yet. Tell Valentino.");
         return;
       }
+      /* A code that has stopped working should not keep being reused for the
+         other button — send them back to the dialog. */
+      setUnlockedCode(null);
       setGateError("That code is not right. Check the email it came in.");
     } catch {
       setGateError("Could not reach the server. Try again in a moment.");
     } finally {
       setBusyId(null);
     }
+  }
+
+  /** A download button was pressed: ask for the code, or go straight there if
+   *  this visitor has already given a working one. */
+  function handleDownload(buildId) {
+    if (unlockedCode) {
+      void requestDownload(buildId, unlockedCode);
+      return;
+    }
+    setGateError(null);
+    setPendingBuild(buildId);
+  }
+
+  function handleSubmitCode(event) {
+    event.preventDefault();
+    const typed = code.trim();
+    if (typed === "" || !pendingBuild) return;
+    void requestDownload(pendingBuild, typed);
   }
 
   /* Detection, after mount. This is the whole hydration-safety story. */
@@ -302,31 +337,6 @@ export default function DownloadCards() {
           </p>
         </div>
 
-        {/* The gate. One field for both cards: the code is per person, not per
-            platform, and asking twice would only look like a mistake. */}
-        <div className="home__gate">
-          <label className="home__gate-label" htmlFor="home-download-code">
-            Access code
-          </label>
-          <input
-            id="home-download-code"
-            className="home__gate-input"
-            name="code"
-            type="text"
-            autoComplete="off"
-            spellCheck={false}
-            placeholder="From your email"
-            value={code}
-            onChange={(event) => {
-              setCode(event.target.value);
-              setGateError(null);
-            }}
-          />
-          <p className="home__gate-note" role="status" aria-live="polite">
-            {gateError ?? "The downloads are for the club trial, so they are behind a code."}
-          </p>
-        </div>
-
         <ul className="home__download-grid">
           <DownloadCard
             platform="macos"
@@ -375,6 +385,77 @@ export default function DownloadCards() {
 
         <InstallNotes />
       </div>
+
+      {/* The code prompt. It appears when a download is asked for, rather than
+          sitting on the page: the buttons are what people came for, and the
+          code is a step on the way, not a form to fill in first.
+
+          `onCancel` covers the Escape key, which the browser handles itself and
+          which would otherwise leave `pendingBuild` set and the dialog shut. */}
+      <dialog
+        className="home__code-dialog"
+        ref={dialogRef}
+        aria-labelledby="home-code-title"
+        onCancel={(event) => {
+          event.preventDefault();
+          setPendingBuild(null);
+        }}
+        onClick={(event) => {
+          /* A click on the dialog element itself is a click on the backdrop:
+             the form inside stops it from ever reaching here. */
+          if (event.target === dialogRef.current) setPendingBuild(null);
+        }}
+      >
+        <form className="home__code-form" onSubmit={handleSubmitCode}>
+          <h3 id="home-code-title" className="home__code-title">
+            Access code
+          </h3>
+          <p className="home__code-lede">
+            The builds are for the club trial, so they are behind a code. It is in
+            the email with your key — or ask me for one.
+          </p>
+
+          <label className="home__code-label" htmlFor="home-download-code">
+            Code
+          </label>
+          <input
+            id="home-download-code"
+            className="home__input home__code-input"
+            name="code"
+            type="text"
+            autoComplete="off"
+            autoFocus
+            spellCheck={false}
+            placeholder="TENNIS…"
+            value={code}
+            onChange={(event) => {
+              setCode(event.target.value);
+              setGateError(null);
+            }}
+          />
+
+          <p className="home__code-status" role="status" aria-live="polite">
+            {gateError ?? " "}
+          </p>
+
+          <div className="home__code-actions">
+            <button
+              className="home__btn home__btn--secondary"
+              type="button"
+              onClick={() => setPendingBuild(null)}
+            >
+              Cancel
+            </button>
+            <button
+              className="home__btn home__btn--primary"
+              type="submit"
+              disabled={code.trim() === "" || busyId !== null}
+            >
+              {busyId ? "Checking…" : "Download"}
+            </button>
+          </div>
+        </form>
+      </dialog>
     </section>
   );
 }

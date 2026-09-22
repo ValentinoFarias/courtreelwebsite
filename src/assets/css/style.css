@@ -1416,40 +1416,68 @@ canvas {
   width: 100%;
 }
 
-/* The access-code gate above the two cards. One field, centred with the
-   section head, because the code is per person and not per platform. */
-.home__gate {
-  display: grid;
-  gap: var(--space-2xs);
-  max-width: 24rem;
-  margin-block-end: var(--space-md);
+/* The access-code dialog. Native <dialog>, so the backdrop, the focus trap and
+   the Escape key come from the browser rather than from us. */
+.home__code-dialog {
+  width: min(26rem, calc(100vw - 2 * var(--space-md)));
+  /* The browser centres a modal <dialog> through `margin: auto`, which a width
+     alone does not restore — without this it pins to the top-left corner. */
+  margin: auto;
+  padding: 0;
+  border: var(--border-hairline);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-paper);
+  color: var(--color-text);
 }
 
-.home__gate-label {
+.home__code-dialog::backdrop {
+  background: rgb(20 18 12 / 42%);
+}
+
+.home__code-form {
+  display: grid;
+  gap: var(--space-2xs);
+  padding: var(--space-md);
+}
+
+.home__code-title {
+  margin: 0;
+  font-size: var(--text-lg);
+}
+
+.home__code-lede {
+  margin: 0;
   color: var(--color-text-secondary);
   font-size: var(--text-sm);
 }
 
-.home__gate-input {
-  padding: 0.7rem 0.9rem;
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-sm);
-  background: var(--color-surface);
-  color: var(--color-text);
-  font: inherit;
-  letter-spacing: 0.08em;
+.home__code-label {
+  margin-block-start: var(--space-2xs);
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+}
+
+/* Everything about the box itself comes from .home__input, which the feedback
+   form uses too. This adds only what is true of a code and not of a name. */
+.home__code-input {
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-.home__gate-input:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+/* Always rendered, even when empty, so the buttons do not jump when an error
+   appears. */
+.home__code-status {
+  min-height: 1.2em;
+  margin: 0;
+  color: var(--color-red);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
 }
 
-.home__gate-note {
-  margin: 0;
-  color: var(--color-text-secondary);
-  font-size: var(--text-xs);
+.home__code-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2xs);
 }
 
 /* macOS offers two builds, so the action area can hold more than one button. */
